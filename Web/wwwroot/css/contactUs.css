@@ -1,0 +1,137 @@
+﻿body {
+    color: #ffffff;
+}
+.padding-bottom {
+    padding-bottom: 0rem;
+}
+.header-txt {
+    margin-right: 30rem;
+}
+.contact-row {
+    background-color: rgba(24, 21, 21, 0.8);
+}
+.contact-us iframe {
+    width: 100%;
+}
+.contact-us form {
+    background: #FFFFFF;
+    box-shadow: 0px 4px 40px #000000;
+    border-radius: 20px;
+    width: 30rem;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-top: -20rem;
+    position: relative;
+}
+.alert-success {
+    margin: 0rem 3rem 0rem 2rem;
+    text-align: center;
+}
+.alert {
+    padding: 1rem;
+}
+.contact-us form .form-group {
+    padding: 2rem 3rem 0rem 2rem;
+}
+.contact-us .form-div {
+    z-index: 99;
+    text-align: right;
+    text-align: -webkit-right;
+    text-align: -moz-right;
+    text-align: -o-right;
+    padding-right: 10rem;
+}
+.padding-bottom-header{
+    padding-bottom: 0rem;
+}
+.contact-us form input, .contact-us form textarea {
+    border: unset;
+    border-bottom: 1px solid #2F8E9B;
+    border-radius: unset;
+}
+#submitBtn {
+    width: 14rem;
+    margin: 5rem 2rem 3rem 1rem;
+    background: #2F8F9C;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    align-self: flex-end;
+}
+.contact-info {
+    width: 30rem;
+    padding: 3rem 0rem 2rem;
+}
+.header-content {
+    margin-top: -15.59rem;
+}
+.header-content-without-card {
+    padding-bottom: 1.1rem;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
+/*-----------------Media Query-----------------*/
+@media (max-width: 1200px) {
+    .header-content {
+        margin-top: -20rem;
+    }
+}
+@media (max-width: 1024px) {
+    .header-content-without-card {
+        padding-bottom: 0.706rem;
+    }
+}
+@media (max-width: 992px) {
+    .header-content {
+        margin-top: auto;
+    }
+    .header-txt {
+        margin-right: auto;
+        color: #000000;
+    }
+    .contact-us form, .contact-info {
+        margin-top: 2rem;
+    }
+    .contact-us .form-div {
+        text-align: right;
+        text-align: -webkit-right;
+        text-align: -moz-right;
+        text-align: -o-right;
+        padding-right: 1rem;
+    }
+    .contact-us form, .contact-info {
+        width: auto;
+    }
+    .contact-info {
+        padding: 0rem 0rem 0rem;
+    }
+    .contact-us .col-lg-6 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    #submitBtn {
+        width: auto;
+    }
+    .header-content-without-card {
+        padding-bottom: 0rem;
+    }
+    .text-right-mobile {
+        text-align: center;
+    }
+    .contact-us-info{
+        text-align: center;
+    }
+    .map{
+        height: 50vh;
+    }
+}
+

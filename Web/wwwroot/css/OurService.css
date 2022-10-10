@@ -1,0 +1,103 @@
+﻿.services-section {
+    background-color: #F2F2F7;
+    margin-top:23rem;
+}
+.services-section .card .card-body {
+    padding-left: inherit;
+}
+.services-section .card-img-top {
+    height: auto;
+}
+.services-section .card {
+    background: none !important;
+    border: none;
+    min-height: 50rem;
+    margin-top: -18rem;
+}
+.services h4 {
+    color: #2F8F9C;
+    font-weight: normal;
+}
+.services-section li {
+    padding-bottom: 1rem;
+}
+.padding-top {
+    padding-top: 6rem;
+}
+.awards-section {
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+}
+.awards-section img {
+    width: 11rem;
+    height: 11rem;
+    border-radius: 50%;
+    background-color: #F2F2F7;
+}
+.facilites-heading {
+    margin-top: -19rem;
+}
+.titlelargeontop {
+    padding-top: 3rem;
+}
+.our-services{
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+}
+
+/*-----------------Media Query-----------------*/
+@media (max-width: 992px) {
+    .facilites-heading {
+        margin-top: 0rem;
+    }
+    .facilites{
+        margin-top: unset;
+    }
+    .services-section .card {
+        margin-top: unset;
+    }
+    .services-section {
+        margin-top: 0rem;
+    }
+    .titlelargeontop{
+        padding-top: 0rem;
+    }
+    .awards-section {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+    }
+    .awards-section img{
+        width: 7rem;
+        height: 7rem;
+    }
+    .content p, ul{
+        margin: 0rem;
+    }
+    .services-section li {
+        padding-bottom: 0rem;
+    }
+    .our-services {
+        padding-bottom: 0rem;
+        margin-bottom: 0rem;
+    }
+    .awards-section p {
+        padding-top: 1.5rem;
+        padding-left: 0.2rem;
+    }
+    .services-section .card-img-top{
+        position: relative;
+    }
+    .services-section .card-body {
+        position: absolute;
+        bottom: 0rem;
+        background: linear-gradient( 30deg, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0) 90%);
+        padding-left: 1rem !important;
+        padding-right: 1rem;
+        width: -webkit-fill-available;
+    }
+}
+@media (min-width: 1440px) {
+    .services-section .card-img-top {
+        height: auto;
+    }
+}

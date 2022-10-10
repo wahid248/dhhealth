@@ -1,0 +1,122 @@
+﻿@model List<Web.ViewModels.PageViewModel>
+@{
+    var controller = @ViewContext.RouteData.Values["Controller"].ToString();
+}
+
+@{
+    //var img = string[];
+    string[] img = new string[9];
+    foreach (var m in Model)
+    {
+
+        switch (m.Controller)
+        {
+            case "Home":
+                img[0] = "fas fa-home";
+                break;
+
+            case "WhoWeAre":
+                img[1] = "fa fa-users";
+                break;
+            case "OurServices":
+                img[2] = "fas fa-cogs";
+                break;
+            case "SustainableImpacts":
+                img[3] = "fas fa-compress-arrows-alt";
+                break;
+            case "PartnerWithUs":
+                img[4] = "fas fa-handshake";
+                break;
+            case "OurBrands":
+                img[5] = "fab fa-battle-net";
+                break;
+            case "Career":
+                img[6] = "fas fa-briefcase";
+                break;
+            case "News":
+                img[7] = "fas fa-newspaper";
+                break;
+            case "ContactUs":
+                img[8] = "fas fa-address-book";
+                break;
+
+        }
+    }
+}
+
+<div class="nav-1">
+    @foreach (var m in Model)
+    {
+        if (m.IsEnabled && (m.Name == "Career" || m.Name == "News" || m.Name == "Contact Us"))
+        {
+            @Html.ActionLink(m.Name, m.Action ?? "Index", m.Controller, null, new { @class = controller == m.Controller ? "active" : "" })
+        }
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Dashboard", "Index", "Dashboard")
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Logout", "LogOut", "Account")
+    }
+    @*else
+        {
+            @Html.ActionLink("Login", "LogIn", "Account")
+        }*@
+</div>
+
+<div class="nav-2">
+    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+        <img src="/images/logo.png" alt="" class="img-fluid menu-image" />
+    </a>
+
+    @foreach (var m in Model)
+    {
+        if (m.IsEnabled && m.Name != "Career" && m.Name != "News" && m.Name != "Contact Us")
+        {
+            @Html.ActionLink(m.Name, m.Action ?? "Index", m.Controller, null, new { @class = controller == m.Controller ? "active" : "" })
+        }
+    }
+</div>
+
+<div class="nav-3">
+    
+    <div class="hamburger">
+        <a class="hamburger-menu-logo" asp-controller="Home" asp-action="Index">
+        <img class="img-fluid" src="/images/logo.png" alt="" />
+        </a>
+        <input type="checkbox" />
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <br />
+
+        <ul>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>@Html.ActionLink("Dashboard", "Index", "Dashboard")</li>
+            }
+            @foreach (var m in Model.Select((value, index) => new { index, value }))
+            {
+                if (m.value.IsEnabled)
+                {
+                    <li>
+                        <i class='@img[m.index]' style="color:#ffffff"></i>
+                        @Html.ActionLink(m.value.Name, m.value.Action ?? "Index", m.value.Controller, null, new { @id = m.value.Id, @class = controller == m.value.Controller ? "active" : "" })
+                    </li>
+                }
+            }
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>@Html.ActionLink("Logout", "LogOut", "Account")</li>
+            }
+            @*else
+                {
+                    <li>@Html.ActionLink("Login", "LogIn", "Account")</li>
+                }*@
+        </ul>
+    </div>
+</div>

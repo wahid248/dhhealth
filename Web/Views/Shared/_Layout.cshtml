@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Google Tag Manager -->
+    <script>
+    (function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-P5MWH98');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="Health, solution, care, Digital, Healthcare, Digital Healthcare Solutions, Healthcare Solutions, Digital Healthcare, healthcare services, health financing, medicine, medicare">
+    <meta name="description" content="Health care solution for all.Digital Healthcare Solutions.Our purpose is health for all. We are a social business, providing high-quality healthcare services & health financing using innovative technology, accessible for all while empowering patients and families in closing the health care gap between the rich and poor, the rural and urban. Because everyone deserves good health">
+
+    @RenderSection("Meta", required: false)
+
+    <title>@ViewData["Title"] |&nbsp;Digital Healthcare Solutions</title>
+
+    <bundle name="wwwroot/bundles/site.min.css" />
+    <bundle name="wwwroot/bundles/site.min.js" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P5MWH98"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    @await Component.InvokeAsync("Menu")
+    <header>
+        <img class="img-fluid w-100" src="@ViewBag.BackgroundImageName" alt="logo" />
+
+    </header>
+    <a id="goTopButton"></a>
+    <div class="animated-body">
+        @RenderBody()
+    </div>
+
+    <footer class="container-fluid footer">
+        <img src="@Url.Content("~/images/footer-star.svg")" alt="image" class="img-fluid footer-star">
+        <div class="d-none d-md-block">
+            <div class="row">
+                <div class="col-lg-4 centered">
+                    <img src="@Url.Content("~/images/logo-footer.svg")" alt="Footer Logo" class="h-75" />
+                </div>
+                <div class="col-lg-4 centered pt-3">
+                    <p> &copy; 2021 GRAMEEN TELECOM TRUST - DIGITAL HEALTHCARE SOLUTIONS</p>
+                </div>
+                <div class="col-lg-4 centered">
+                    <ul class="footer-social-icons pt-3">
+                        <li>
+                            <a href="https://www.facebook.com/dhforall" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/fb.svg")" alt="image"></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/dhforall" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/twitter.svg")" alt="image"></a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/channel/UCAHpdZbc-JUaILDNvWtlxdQ" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/youtube.svg")" alt="image"></a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/dhforall/" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/insta.svg")" alt="image"></a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/company/dhforall/" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/linkedin.svg")" alt="image"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-block d-md-none">
+
+            <div class="icon-title">
+                <div class="centered">
+                    <img src="@Url.Content("~/images/logo-footer.svg")" alt="Footer Logo" class="h-75" />
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 centered pt-3 footer-text">
+                        <p> &copy; 2021 GRAMEEN TELECOM TRUST -<br> DIGITAL HEALTHCARE SOLUTIONS</p>
+                    </div>
+                    <div class="col-lg-4 centered">
+                        <ul class="footer-social-icons">
+                            <li>
+                                <a href="https://www.facebook.com/dhforall" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/fb.svg")" alt="image"></a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/dhforall" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/twitter.svg")" alt="image"></a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/channel/UCAHpdZbc-JUaILDNvWtlxdQ" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/youtube.svg")" alt="image"></a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/dhforall/" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/insta.svg")" alt="image"></a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/dhforall/" target="_blank"><img class="img-fluid" src="@Url.Content("~/images/linkedin.svg")" alt="image"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

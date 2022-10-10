@@ -1,0 +1,221 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<!-- Modal -->
+@await Html.PartialAsync("~/Views/Image/_ImagePopupModal.cshtml")
+
+<div class="row add-section">
+    <div class="col-lg-5">
+        @using (Html.BeginForm("AddNews", "UploadNews", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="heading">
+                <h1>Upload News</h1>
+
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        @Model.SuccessMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        @Model.ErrorMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <fieldset class="border p-4">
+                <legend class="w-auto pl-4 pr-4 text-left">News Details</legend>
+                <div class="form-group">
+                <div class="form-group d-inline-flex w-75 pr-3">
+                    @Html.TextBoxFor(m => m.News.Title, new { @class = "form-control", placeholder = " News Title" })
+                    @Html.ValidationMessageFor(m => m.News.Title)
+                </div>
+                </div>
+                <div class="form-group" id="imagethumL">
+                    <button class="btn btn-info" id="largeImageBtn">Large Image</button><br />
+
+                </div>
+                <div class="form-group" id="imagethumM">
+                    <button class="btn btn-info" id="mediumImageBtn">Medium Image</button><br />
+
+                </div>
+                <div class="form-group" id="imagethumS">
+                    <button class="btn btn-info" id="smallImageBtn">Small Image</button><br />
+
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.News.LargeImageUrl)
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.News.MediumImageUrl)
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.News.SmallImageUrl)
+                </div>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.News.Content, new { @class = "form-control", placeholder = "Content", @rows = 6 })
+                    @Html.ValidationMessageFor(m => m.News.Content)
+                </div>
+                <button type="submit" class="btn btn-info" style="float: right;">Save</button>
+            </fieldset>
+            <br />
+            <br />
+        }
+    </div>
+    <div class="offset-lg-1 col-lg-6">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">News Title</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.AllNews != null)
+                {
+                    foreach (var news in Model.AllNews)
+                    {
+                        <tr class="news-table" id="@news.Id">
+                            <td id="@news.Id">
+                                @Html.DisplayFor(modelItem => news.Title)
+                            </td>
+                            <td>
+                                <img src="@Url.Content(news.SmallImageUrl)" class="img-fluid img-thumbnail" alt="">
+                            </td>
+                            <td class="d-flex">
+                                @Html.ActionLink("", "ShowNewsDetails", "UploadNews", new { Id = news.Id }, new { @class = "btn fa fa-edit" })
+                                @Html.ActionLink("", "Delete", "UploadNews", new { Id = news.Id }, new { @class = "btn fa fa-trash" })
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var clickedBtn = '';
+
+            //Remove image from Form on click
+            $(document).on('click', '.deleteBtn', function () {
+
+                var clickedDelBtn = $(this).parent().parent().prop('id');
+                $(this).parent().siblings('.img-thumbnail').remove();
+                $(this).parent().remove();
+
+                if (clickedDelBtn == "imagethumL") {
+                    $('#News_LargeImageUrl').prop('value', '')
+                    $('#largeImageBtn').prop('disabled', false);
+                }
+                else if (clickedDelBtn == "imagethumM") {
+                    $('#News_MediumImageUrl').prop('value', '')
+                    $('#mediumImageBtn').prop('disabled', false);
+                }
+                else if (clickedDelBtn == "imagethumS") {
+                    $('#News_SmallImageUrl').prop('value', '')
+                    $('#smallImageBtn').prop('disabled', false);
+                }
+            });
+            //image selection popup
+            $('#largeImageBtn, #mediumImageBtn,#smallImageBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#imagePopup').appendTo("body").modal('show');
+                clickedBtn = $(this).prop('id');//get clicked button id
+            });
+             //image on click
+            $(document).on('click', '.img-wrap img', function () {
+                id = $(this).prop('id');
+                src = $(this).prop('src');
+
+                var newHtml = "";
+                newHtml += '<img id="' + id + '" src="' + src + '" class="img-fluid img-thumbnail" alt="" style="width:15rem; height:10rem">';
+                newHtml += '<span class="delete"><img src="/images/deleteIcon.png" class="img-fluid deleteBtn" alt=""></span>';
+                
+                if (clickedBtn == "largeImageBtn") {
+                    $('#News_LargeImageUrl').prop('value', src)
+                    $('#largeImageBtn').prop('disabled', true);
+                    $("#imagethumL").append(newHtml);
+                }
+                if (clickedBtn == "mediumImageBtn") {
+                    $('#News_MediumImageUrl').prop('value', src)
+                    $('#mediumImageBtn').prop('disabled', true);
+                    $("#imagethumM").append(newHtml);
+                }
+                if (clickedBtn == "smallImageBtn") {
+                    $('#News_SmallImageUrl').prop('value', src)
+                    $('#smallImageBtn').prop('disabled', true);
+                    $("#imagethumS").append(newHtml);
+                }
+
+                $('#imagePopup').modal('hide');
+            });
+            //get selected album images
+            $('.album-wrap button').on("click", function (e) {
+                e.preventDefault();
+                $(".album-wrap button").removeClass('active');
+                $(this).toggleClass('active');
+
+                $('#addImageBtn').attr('disabled', false);
+                album = $(this).attr('id');
+                //console.log(album);
+                //put albam name to add image form
+                $('#albumName').val(album);
+                //get all images for selected album
+                $.ajax({
+                    url: '@Url.Action("GetSelectedImageList", "Image")',
+                    type: "GET",
+                    data: { Album: album },
+                    beforeSend: () => {
+                        //$('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                    success: response => {
+                        //console.log(response);
+                        var newHtml = "";
+                        $.each(response, function (index, value) {
+                            if (value.imageUrl) {
+                                newHtml += '<div class="col-lg-3 img-wrap">';
+                                newHtml += '<img src="' + value.imageUrl + '" id="' + value.id + '" class="img-fluid img-thumbnail" alt="">';
+                                newHtml += '</div>';
+                            }
+                            else {
+                                newHtml += '<div class="col-lg-12 img-wrap">';
+                                newHtml += '<h1 class="text-center">No Images To Select!<h1>';
+                                newHtml += '</div>';
+                            }
+
+                        });
+                       $("#imageView").html(newHtml);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        //$('.section-list.lds-spinner').css('display', 'none');
+                    }
+                });
+            });
+            //End get selected album images
+
+        });
+    </script>
+}

@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20201220183457_EmailLogging.cs" />
+    <Compile Remove="Migrations\20201220183457_EmailLogging.Designer.cs" />
+    <Compile Remove="Migrations\20201220183930_EmailLogging.cs" />
+    <Compile Remove="Migrations\20201220183930_EmailLogging.Designer.cs" />
+    <Compile Remove="Migrations\20201220190435_EmailLog.cs" />
+    <Compile Remove="Migrations\20201220190435_EmailLog.Designer.cs" />
+    <Compile Remove="Migrations\20210104051829_JobPost.cs" />
+    <Compile Remove="Migrations\20210104051829_JobPost.Designer.cs" />
+    <Compile Remove="Migrations\20210104052031_Jobpost.cs" />
+    <Compile Remove="Migrations\20210104052031_Jobpost.Designer.cs" />
+    <Compile Remove="Migrations\20210119145133_Banner.cs" />
+    <Compile Remove="Migrations\20210119145133_Banner.Designer.cs" />
+    <Compile Remove="Migrations\20210206080223_DropBannerTable.cs" />
+    <Compile Remove="Migrations\20210206080223_DropBannerTable.Designer.cs" />
+    <Compile Remove="Migrations\20210206091720_test.cs" />
+    <Compile Remove="Migrations\20210206091720_test.Designer.cs" />
+    <Compile Remove="Migrations\20210206093540_test.cs" />
+    <Compile Remove="Migrations\20210206093540_test.Designer.cs" />
+    <Compile Remove="Migrations\20210206093705_test.cs" />
+    <Compile Remove="Migrations\20210206093705_test.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.5.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+</Project>

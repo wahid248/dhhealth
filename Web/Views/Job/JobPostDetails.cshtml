@@ -1,0 +1,168 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@{
+    ViewData["Title"] = "JobPostDetails";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h1>JobPostDetails</h1>
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+
+    .post-logo {
+        position: absolute;
+        right: 2rem;
+        top: -10rem;
+    }
+
+    .r-block {
+        width: 6rem;
+        position: absolute;
+        left: 0;
+    }
+
+    .padding-left {
+        padding-left: 7rem;
+    }
+
+    .padding-top {
+        padding-top: 2rem;
+    }
+
+    #submitBtn {
+        width: 14rem;
+        margin: 4rem 0rem 2rem 2rem;
+        background: #2F8F9C;
+        color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        float: right;
+    }
+
+    .field-validation-error {
+        width: 100%;
+    }
+</style>
+<div class="row padding-top">
+    <div class="col-lg-10 jobPost">
+        @using (Html.BeginForm("Update", "Job", FormMethod.Post, new { @id = "jobForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    @Model.SuccessMessage
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    @Model.ErrorMessage
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <p class="line-height">
+                <h5 class="text-center">We are Hiring!</h5>
+                <br />
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.JobPostDetails.Intro, new { @class = "form-control", placeholder = "Introduction of the post", @rows = 6 })
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.Intro)
+                </div>
+
+            </p>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Position</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPostDetails.Postion, new { @class = "form-control", placeholder = "Position Name" })
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.Postion)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Job Code</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPostDetails.JobCode, new { @class = "form-control", placeholder = "Job Code", @type = "number", @min = 1 })<br />
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.JobCode)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Type of Employment</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPostDetails.EmploymentType, new { @class = "form-control", placeholder = "Type of Employment" })<br />
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.EmploymentType)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Job Location</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPostDetails.JobLocation, new { @class = "form-control", placeholder = "Job Location" })
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.JobLocation)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">DeadLine</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPostDetails.DeadLine, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker", @type = "date" })
+                    @*@Html.TextBoxFor(m => m.JobPostDetails.DeadLine, new {@class = "form-control", @type = "date" })*@
+                    @Html.ValidationMessageFor(m => m.JobPostDetails.DeadLine)
+                </div>
+            </div>
+            <h4>Job Description/Responsibilities:</h4>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPostDetails.JobDescription, new
+                {
+                    @class = "form-control",
+                    placeholder = "Each new line must be started with a number followed by a fullstop,  e.g:\n\n" +
+               "1. First responsibility\n" +
+               "2. Second responsibility",
+                    @rows = 14
+                })
+                @Html.ValidationMessageFor(m => m.JobPostDetails.JobDescription)
+            </div>
+            <h4>Job Specifications:</h4>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPostDetails.JobSpecification, new
+                {
+                    @class = "form-control",
+                    placeholder = "Each new line must be started with a number followed by a fullstop,  e.g:\n\n" +
+               "1. First specification\n" +
+               "2. Second specification",
+                    @rows = 14
+                })
+                @Html.ValidationMessageFor(m => m.JobPostDetails.JobSpecification)
+            </div>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPostDetails.ApplyProcess, new { @class = "form-control", placeholder = "Apply Procedure", @rows = 7 })
+                @Html.ValidationMessageFor(m => m.JobPostDetails.ApplyProcess)
+            </div>
+            @Html.HiddenFor(m => m.JobPostDetails.Id)
+            <button type="submit" class="btn" id="submitBtn">Update</button>
+        }
+    </div>
+</div>
+

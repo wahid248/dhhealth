@@ -1,0 +1,226 @@
+﻿@model Web.ViewModels.ImageListViewModel
+@{
+    ViewData["Title"] = "AddImage";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+    var imageList = Model.Images;
+}
+
+@section Styles{
+    <style>
+        .add-image form {
+            width: 90%;
+            display: inline-block;
+        }
+    </style>
+}
+<div class="row add-image">
+    <!-- Modal -->
+    <div id="AlbumPopup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    @using (Html.BeginForm("AddAlbum", "Image", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="heading">
+                            <h5>Add New Album</h5>
+                            @Html.ValidationMessage("Failed to Create")
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Image.Album, new { @class = "form-control", @type = "text", placeholder = "Album Name" })
+                            @Html.ValidationMessageFor(m => m.Image.Album)
+                        </div>
+
+                        <button type="submit" class="btn btn-info" style="float: right">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="AddImagePopup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    @using (Html.BeginForm("AddImage", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="heading">
+                            <h5>Add New Image</h5>
+                            @Html.ValidationMessage("Failed to Create")
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="selectedFile" />
+                        </div>
+                        <div class="form-group">
+                            @Html.HiddenFor(m => m.Image.Album, new { @id = "albumName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(m => m.Image.BottomText, new { @class = "form-control", placeholder = "Bottom Text" })
+                            @Html.ValidationMessageFor(m => m.Image.BottomText)
+                        </div>
+
+                        <button type="submit" class="btn btn-info" style="float:right">Save</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div id="imagePopup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <img src="" class="img-fluid" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Show success message *@
+    <div class="col-lg-12">
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                @Model.SuccessMessage
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+    </div>
+    @* End Show success message *@
+
+    <div class="col-lg-3 p-2">
+        <fieldset class="border p-4">
+            <legend class="w-auto pl-4 pr-4 text-left"> <button class="btn btn-info" id="creatAlbumBtn">+Create New Album</button></legend>
+            @foreach (var a in Model.Albums)
+            {
+                <div class="row justify-content-center py-1">
+                    <div class="col-lg-10 album-wrap">
+                        <button class="btn btn-info btn-block" id="@a.Album">@a.Album</button>
+                    </div>
+                </div>
+            }
+        </fieldset>
+    </div>
+
+    <div class="col-lg-9 p-2 images-div">
+        <fieldset class="border p-4">
+            <legend class="w-auto pl-4 pr-4 text-right"><button class="btn btn-info" id="addImageBtn" disabled>+ Add New Image</button></legend>
+            <div class="row" id="imageView">
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#creatAlbumBtn').on('click', () => {
+                $('#AlbumPopup').appendTo("body").modal('show');
+            });
+            $('#addImageBtn').on('click', () => {
+                $('#AddImagePopup').appendTo("body").modal('show');
+            });
+
+            //image on click
+             $(document).on('click', '.img-wrap .img-thumbnail', function(){
+                src = $(this).attr('src');
+                $('#imagePopup img').attr('src', src);
+                $('#imagePopup').appendTo("body").modal('show');
+
+            });
+
+
+            //image delete btn click
+            $(document).on('click', '.delete ', function () {
+                var id = $(this).attr('id');
+                  if (confirm("Are you sure?")) {
+                    $.ajax({
+                    url: '@Url.Action("Delete", "Image")',
+                    type: "GET",
+                    data: { Id: id },
+                    beforeSend: function() {
+                    },
+                    success: function(response){
+                        //console.log(response);
+                        $(this).closest(".img-wrap").remove();
+                    },
+                    error: function(xhr) {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: function() {
+                    }
+                });
+                }
+                return false;
+             });
+
+            //modal on close
+            $('#imagePopup').on('hidden.bs.modal', function () {
+                $('#imagePopup img').attr('src', '');
+            })
+
+
+            //album button on click
+            $('.album-wrap button').on("click", function (e) {
+                e.preventDefault();
+                $(".album-wrap button").removeClass('active');
+                $(this).toggleClass('active');
+
+                $('#addImageBtn').attr('disabled', false);
+                album = $(this).attr('id');
+
+                //put albam name to add image form
+                $('#albumName').val(album);
+
+                //get all images for selected album
+                $.ajax({
+                    url: '@Url.Action("GetSelectedImageList", "Image")',
+                    type: "GET",
+                    data: { Album: album },
+                    beforeSend: () => {
+                    },
+                    success: response => {
+                       // console.log(response);
+
+                            var newHtml = "";
+                        $.each(response, function (index, value) {
+                            if (value.imageUrl) {
+                                newHtml += '<div class="col-lg-3 img-wrap">';
+                                newHtml += '<a class="delete" id="' + value.id + '"><img src="/images/deleteIcon.png" class="img-fluid deleteBtn" alt=""></a>';
+                                newHtml += '<img src="' + value.imageUrl + '" class="img-fluid img-thumbnail" alt="">';
+                                newHtml += '</div>';
+                            }
+                            else {
+                                newHtml += '<div class="col-lg-12 img-wrap">';
+                                newHtml += '<h1 class="text-center">No Image Uploaded<h1>';
+                                newHtml += '</div>';
+                            }
+                            });
+                            $("#imageView").html(newHtml);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                    }
+                });
+
+
+            });
+        });
+    </script>
+}

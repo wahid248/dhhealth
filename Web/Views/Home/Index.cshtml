@@ -1,0 +1,220 @@
+@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/Home.css" />
+}
+
+<div class="container-fluid home">
+    @if (Model.PagesWithSections != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            int count = 0;
+            int i = 0;
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+                if (count != 2)//hide 2nd div heading
+                {
+                    if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                    {
+                        <div class="row centered facilites-heading">
+                            <div class="col-lg-8">
+                                <div class="row px-4">
+                                    <div class="col-lg-12 text-center p-0">
+                                        <div class="header-txt header-text-background">
+                                            <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                            <div class="padding-for-mobile">
+                                                @Html.Raw((@parentSections.Content))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row middled">
+                            <div class="col-lg-9">
+                                <div class="row middled">
+                                    <div class="col-lg-12 padding-title text-center">
+                                        @if (parentSections.TitleLargeOnTop)
+                                        {
+                                            <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                            <h4 style="font-size:2.25rem; color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 style="font-size:2.25rem; color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                            <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                        }
+                                        <div>
+                                            @Html.Raw((@parentSections.Content))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered padding-bottom facilites">
+                        <div class="col-lg-8">
+                            <div class="row px-4">
+                                @foreach (var sections in pageWithSections.Sections)
+                                {
+                                    if (sections.ParentSectionId == parentSections.Id)
+                                    {
+                                        <div class="col-lg-3 card">
+                                            <div class="icon-title">
+                                                <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h5>
+                                                    <div class="card-text">
+                                                        @Html.Raw((@sections.Content))
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithOutBackground)
+                {
+                    <div class="row middled">
+                        <div class="col-lg-9">
+                            <div class="row our-reach padding-bottom">
+                                @foreach (var sections in pageWithSections.Sections)
+                                {
+                                    if (sections.ParentSectionId == parentSections.Id)
+                                    {
+                                        <div class="col-lg-3 padding-bottom-card">
+                                            <div class="card">
+                                                <div class="icon-title">
+                                                    <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                                    <div class="card-body">
+                                                        <p class="m-0">@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                                        @if (sections.TitleLargeOnTop)
+                                                        {
+                                                            <h1 class="card-title text-left titlelarge">@Html.DisplayFor(modelItem => sections.TitleLarge)</h1>
+                                                            <h4 class="card-subtitle text-left">@Html.DisplayFor(modelItem => sections.TitleSmall)</h4>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h4 class="card-subtitle text-left titlelarge">@Html.DisplayFor(modelItem => sections.TitleSmall)</h4>
+                                                            <h1 class="card-title text-left">@Html.DisplayFor(modelItem => sections.TitleLarge)</h1>
+                                                        }
+
+                                                        <div class="content">
+                                                            @Html.Raw((@sections.Content))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithBackground && count == 2)
+                {
+                    <div class="row middled">
+                        <div class="col-lg-9">
+                            <div class="row campain padding-bottom">
+                                @foreach (var sections in pageWithSections.Sections)
+                                {
+                                    if (sections.ParentSectionId == parentSections.Id)
+                                    {
+                                        <div class="col-lg-4 padding-bottom-3">
+                                            <div class="card box-shadow">
+                                                <img class="card-img-top" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                                <p class="m-0">@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                                <div class="card-body">
+                                                    @if (sections.TitleLargeOnTop)
+                                                    {
+                                                        <h4 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                                        <h6 class="card-subtitle pb-3">@Html.DisplayFor(modelItem => sections.TitleSmall)</h6>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h6 class="card-subtitle">@Html.DisplayFor(modelItem => sections.TitleSmall)</h6>
+                                                        <h4 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                                    }
+                                                    <div class="pt-4">
+                                                        @Html.Raw((@sections.Content))
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                if (parentSections.SectionTypeId == (int)SectionTypes.HomeGalleryCard)
+                {
+                    <div class="home-gallery">
+                        <div class="row middled padding-bottom">
+                            
+                            @foreach (var sections in pageWithSections.Sections)
+                            {
+
+                                if (sections.ParentSectionId == parentSections.Id)
+                                {
+                                    if (i == 0)
+                                    {
+                                        <div class="col-lg-3 text-center">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                    <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)"  alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                        if (i == 1) {
+                                            @Html.Raw("<div class='col-lg-7 text-center img-grid'>")
+                                            @Html.Raw("<div class='row'>")
+                                        }
+                                        <div class="col-4">
+                                            <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)"  alt="">
+                                         </div>
+                                         if (i % 3 == 0 && i< 6) {
+                                            @Html.Raw("</div>")
+                                            @Html.Raw("<div class='row'>")
+                                        }
+                                        if (i==6) {
+                                            @Html.Raw("</div>")
+                                           
+                                        }
+                                         
+                                        }
+
+
+                                        i++;
+                                    }
+
+                                }
+                        </div>
+                    </div>
+                }
+                count++;
+            }
+        }
+    }
+</div>

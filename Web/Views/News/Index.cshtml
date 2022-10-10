@@ -1,0 +1,396 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@using System.Web;
+@{
+    ViewData["Title"] = "News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Meta{
+    <meta property="og:url" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="https://dh.health/images/logo-footer.svg" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="https://dh.health/images/logo-footer.svg">
+    <meta name="twitter:domain" content="">
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/News.css" />
+}
+
+<div class="container-fluid">
+    @if (Model.PagesWithSections != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            int count = 0;
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered our-reach-heading">
+                        <div class="col-lg-8">
+                            <div class="row px-4">
+                                <div class="col-lg-12 text-center p-0">
+                                    <div class="header-txt">
+                                        <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                        <div class="padding-for-mobile">
+                                            @Html.Raw((@parentSections.Content))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @*else
+                    {
+                        <div class="row middled">
+                            <div class="col-lg-9">
+                                <div class="row middled">
+                                    <div class="col-lg-12 py-5 text-center">
+                                        @if (parentSections.TitleLargeOnTop)
+                                        {
+                                            <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                            <h4 style="font-size:2.25rem; color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4 style="font-size:2.25rem; color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                            <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                        }
+                                        <div class="pt-3">
+                                            @Html.Raw((@parentSections.Content))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }*@
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered padding-bottom our-reach">
+                        <div class="col-lg-8">
+                            <div class="row px-4">
+                                @foreach (var sections in pageWithSections.Sections)
+                                {
+                                    if (sections.ParentSectionId == parentSections.Id)
+                                    {
+                                        <div class="col-lg-3 card">
+                                            <div class="icon-title">
+                                                <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                                <div class="card-body">
+
+                                                    <h1 class="card-title padding-title count">@Html.DisplayFor(modelItem => sections.TitleLarge)</h1>
+                                                    <div class="card-text">
+                                                        @Html.Raw((@sections.Content))
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                count++;
+            }
+        }
+    }
+
+    <div class="news-section">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <h1>Latest News</h1>
+                    </div>
+                    @foreach (var news in Model.AllNews.Select((value, index) => new { index, value }))
+                    {
+                        if (news.index == 0)
+                        {
+                            <div class="col-lg-12">
+                                <img class="img-fluid padding-top w-100" src="@Html.DisplayFor(modelItem =>news.value.LargeImageUrl)" alt="">
+                            </div>
+                            <div class="col-lg-12 section-padding">
+                                <h2>@Html.DisplayFor(modelItem => news.value.Title)</h2>
+                                @if (news.value.Content.Length > 1800)
+                                    {
+                                        @Html.Raw(news.value.Content.Substring(0, 1800) + " ...");
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(news.value.Content);
+                                    }
+
+                                <div class="read-btn-div">
+                                    <button class="readmoreBtn" data-index="@news.value.Id">Read More</button>
+
+                                    <!-- share button popover  -->
+                                    <div class="popover-block-container">
+                                        <a tabindex="0" data-popover-content="#unique-id" data-toggle="popover" data-placement="right"><img class="img-fluid  shareBtn" src="~/images/news/share.svg" alt=""></a>
+                                        <div id="unique-id" style="display:none;">
+                                            <div class="popover-body">
+                                                <h5 class="pt-3 pb-2 text-center">SHARE THIS NEWS</h5>
+                                                <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /End share button popover  -->
+                                </div>
+                            </div>
+                        }
+                        <div class="modal modal_multi" data-index="@news.value.Id">
+                            <div class="custom-modal">
+                                <span class="close close_multi" data-index="@news.value.Id">×</span>
+                                <img class="img-fluid border-redious p-3 w-100" src="@Html.DisplayFor(modelItem =>news.value.LargeImageUrl)" alt="">
+
+                                <div class="border-redious p-3">
+                                    <h2>@Html.DisplayFor(modelItem => news.value.Title)</h2>
+
+                                    <div class="text-justify">
+                                        @Html.Raw(news.value.Content)
+                                    </div>
+                                    <div class="share-icons">
+                                        <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                                        <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                                        <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="col-lg-12 padding-title text-center">
+                    <h5>Press Release</h5>
+                </div>
+                <div class="col-lg-12 text-center press-release-property">
+                    <a href="/images/news/press release/150,000 RMG Workers and Slum-Dwellers of Dhaka, Gazipur, Narayanganj & Narsingdi will Get Free Consultations.pdf" download><img class="img-fluid" src="/images/news/download.svg" alt=""><span style="padding-left: 2rem;">Download Press Release</span></a>
+                </div>
+                <div class="col-lg-12 padding-title text-center">
+                    <h5>Download Tender Form's</h5>
+                </div>
+                <div class="col-lg-12 text-center">
+                    @*<p class="text-center">No Form's Available</p>*@
+                    <div class="row">
+                        <div class="col-lg-6 col-6 text-center press-release-property">
+
+                            <a href="/images/tender/Bidder Response Document for Customer Service Provider (Annex-2).docx" download><img class="img-fluid" src="/images/news/download.svg" alt=""><br />Bidder Response Document for Customer Service Provider</a>
+                        </div>
+                        <div class="col-lg-6 col-6 text-center press-release-property">
+
+                            <a href="/images/tender/Tender Advertisement for Customer Service Provider.jpg" download><img class="img-fluid" src="/images/news/download.svg" alt=""><br />Tender Advertisement for Customer Service Provider</a>
+                        </div>
+                        <div class="col-lg-6 col-6 text-center press-release-property">
+
+                            <a href="/images/tender/Tender pack for Customer Service Provider.pdf" download><img class="img-fluid" src="/images/news/download.svg" alt=""><br />Tender pack for Customer Service Provider</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 padding-title text-center">
+                    <h5>News Archive</h5>
+                </div>
+                <div class="col-lg-12 pb-5 archive-news">
+                    @foreach (var news in Model.AllNews.Select((value, index) => new { index, value }))
+                    {
+                        if (news.index > 9)
+                        {
+                            <a class="readmoreBtn" data-index="@news.value.Id">
+                                <div class="row archive">
+                                    <div class="col-3">
+                                        <img class="img-fluid" src="@Html.DisplayFor(modelItem =>news.value.SmallImageUrl)" alt="">
+                                    </div>
+                                    <div class="col-9 news-archive-heading">
+                                        <h6>@Html.DisplayFor(modelItem => news.value.Title)</h6>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    }
+
+                </div>
+
+                <div class="col-lg-12 text-center news-subscribe">
+                    <div class="col-lg-12 text-center">
+                        <img class="img-fluid pb-5" src="/images/news/Group.svg" alt="" style="margin-top: -7rem;">
+                        <p>SIGN UP FOR <br />OUR NEWSLETTER</p>
+                    </div>
+                    <div class="col-lg-8 d-inline-block">
+                        @using (Html.BeginForm("NewsSubscription", "News", FormMethod.Post, new { @id = "NewsSubForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.EmailViewModel.Email, new { @class = "form-control", @type = "email", placeholder = "Your Email" })
+                                @Html.ValidationMessageFor(m => m.EmailViewModel.Email)
+                            </div>
+                            <button type="submit" id="subscribeBtn" class="btn">SUBSCRIBE</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="divider" />
+        <div class="row news-div padding-bottom">
+            <div class="col-lg-12 text-center title-padding">
+                <h1>News</h1>
+            </div>
+            <div class="col-lg-12 news-scroll">
+                <div class="row">
+                    @foreach (var news in Model.AllNews.Select((value, index) => new { index, value }))
+                    {
+                        if (news.index > 0 && news.index < 5)
+                        {
+                            <div class="col-lg-3 my-3 dh-content">
+                                <img class="img-fluid w-100" src="@Html.DisplayFor(modelItem =>news.value.MediumImagUrl)" alt="">
+                                <h4>@Html.DisplayFor(modelItem => news.value.Title)</h4>
+
+                                <div class="pt-5 read-btn-div">
+                                    <button class="readmoreBtn" data-index="@news.value.Id">Read More</button>
+                                    <!-- share button popover  -->
+                                    <div class="popover-block-container">
+                                        <a tabindex="0" data-popover-content="#unique-id" data-toggle="popover" data-placement="right"><img class="img-fluid  shareBtn" src="~/images/news/share.svg" alt=""></a>
+                                        <div id="unique-id" style="display:none;">
+                                            <div class="popover-body">
+                                                <h5 class="pt-3 pb-2 text-center">SHARE THIS NEWS</h5>
+                                                <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /End share button popover  -->
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <hr class="divider" />
+
+        <div class="row news-dh-solution padding-bottom">
+            <div class="col-lg-12 title-padding">
+                <h1>From Digital Healthcare Solution</h1>
+            </div>
+            <div class="col-lg-12 news-scroll">
+                @foreach (var news in Model.AllNews.Select((value, index) => new { index, value }))
+                {
+                    if (news.index > 4 && news.index < 10)
+                    {
+                        <div class="row pt-5">
+
+                            <div class="col-lg-3">
+                                <img class="img-fluid w-100" src="@Html.DisplayFor(modelItem =>news.value.MediumImagUrl)" alt="">
+                            </div>
+                            <div class="col-lg-9 dh-content">
+                                <h4>@Html.DisplayFor(modelItem => news.value.Title)</h4>
+                                <div class="text-justify">
+                                    @if (news.value.Content.Length > 300)
+                                    {
+                                        @Html.Raw(news.value.Content.Substring(0, 300) + " ...");
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(news.value.Content);
+                                    }
+                                </div>
+                                <div class="read-btn-div">
+                                    <button class="readmoreBtn" data-index="@news.value.Id">Read More</button>
+                                    <!-- share button popover  -->
+                                    <div class="popover-block-container">
+                                        <a tabindex="0" data-popover-content="#unique-id" data-toggle="popover" data-placement="right"><img class="img-fluid  shareBtn" src="~/images/news/share.svg" alt=""></a>
+                                        <div id="unique-id" style="display:none;">
+                                            <div class="popover-body">
+                                                <h5 class="pt-3 pb-2 text-center">SHARE THIS NEWS</h5>
+                                                <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                                                <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /End share button popover  -->
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/news.js"></script>
+    <script src="~/js/newsModalPopup.js"></script>
+    <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script>
+    $(document).ready(function () {
+        $('#NewsSubForm').submit(function (e) {
+                e.preventDefault();
+            })
+        $('#NewsSubForm').validate({
+            errorClass: 'field-validation-error',
+            errorElement: 'span',
+            rules: {
+                '@Html.NameFor(m => m.EmailViewModel.Email)': {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+                '@Html.NameFor(m => m.EmailViewModel.Email)': {
+                    required: "Email is required",
+                    email: "Not a valid email"
+                }
+            },
+            submitHandler: function (form) {
+                var formData = new FormData();
+                formData = $(form).serialize();
+
+                $.ajax({
+                    url: '@Url.Action("NewsSubscription", "News")',
+                    type: "POST",
+                    data: formData,
+                    beforeSend: function () {
+                        $('#subscribeBtn').prop('disabled', true);
+                    },
+                    success: function (response) {
+                        $("#NewsSubForm")[0].reset();
+                        alert(response.message);
+                    },
+                    error: function (xhr) {
+                        if (xhr.status == 400) {
+                            $("#NewsSubForm")[0].reset();
+                            alert("Already Subscribed!");
+                        }
+                        else {
+                            alert("Something went wrong, Please try again.");
+                            console.error(xhr);
+                        }
+                    },
+                    complete: function () {
+                        $('#subscribeBtn').prop('disabled', false);
+                    }
+                });
+
+                return false;
+            }
+        });
+    });
+    </script>
+}

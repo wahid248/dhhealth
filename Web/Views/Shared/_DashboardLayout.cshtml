@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] |&nbsp;Digital Healthcare Solutions</title>
+
+    <bundle name="wwwroot/bundles/site-admin.min.css" />
+    <bundle name="wwwroot/bundles/site-admin.min.js" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2">
+                <div id="sidebar-main" class="sidebar sidebar-default sidebar-separate sidebar-fixed">
+                    <a href="#" class="sidebar-toggler position-absolute m-2 bg-white d-block d-md-none" data-toggle="collapse" data-target="#sidebar-main" aria-controls="sidebar-main" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="sidebar-toggler-icon"></span>
+                    </a>
+                    <div class="sidebar-content">
+                        <div class="sidebar-category sidebar-default">
+                            <div class="sidebar-user">
+                                <div class="category-content">
+                                    <h5>Welcome, @ViewBag.FirstName</h5>
+                                    <h6>@Html.ActionLink("View Site", "Index", "Home")</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-category sidebar-default">
+                            <div class="category-content">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a href="#pages" class="nav-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="pages">
+                                            Pages
+                                        </a>
+                                        <ul id="pages" class="flex-column collapse">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="Page" asp-action="Index">
+                                                    Page Visibility
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="Page" asp-action="banner">
+                                                    Page Banner
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#contents" class="nav-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="contents">
+                                            Contents
+                                        </a>
+                                        <ul id="contents" class="flex-column collapse">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="UploadNews" asp-action="Index">
+                                                    News
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="Job" asp-action="Index">
+                                                    Job Post
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="Section" asp-action="Index">
+                                                    Sections
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#image" class="nav-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="image">
+                                            Image
+                                        </a>
+                                        <ul id="image" class="flex-column collapse">
+                                            <li class="nav-item">
+                                                <a class="nav-link" asp-area="" asp-controller="Image" asp-action="Index">
+                                                    Add Image
+                                                </a>
+                                            </li>
+                                            @*<li class="nav-item ">
+                                                    <a class="nav-link active" asp-area="" asp-controller="Image" asp-action="GetImageList">
+                                                        Image List
+                                                    </a>
+                                                </li>*@
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Instruction">
+                                            Instruction
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("LogOut", "Account")" class="nav-link ">
+                                            Log Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-10 pt-4">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

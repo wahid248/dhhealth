@@ -1,0 +1,45 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/bundles/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/bootstrap-4.1.3.css",
+      "wwwroot/css/font-awesome-4.5.0.css",
+      "wwwroot/css/font-Merriweather.css",
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundles/site-admin.min.css",
+    "inputFiles": [
+      "wwwroot/css/bootstrap-4.1.3.css",
+      "wwwroot/css/font-awesome-4.5.0.css",
+      "wwwroot/css/admin.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundles/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/lib/jquery-3.5.1.js",
+      "wwwroot/js/lib/popper-2.5.4.js",
+      "wwwroot/js/lib/bootstrap.bundle-4.1.3.js",
+      "wwwroot/js/lib/jquery.validate.js",
+      "wwwroot/js/lib/jquery.validate.unobtrusive.js",
+      "wwwroot/js/lib/printThis.js",
+      "wwwroot/js/lib/echo-1.7.3.js",
+      "wwwroot/js/site.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundles/site-admin.min.js",
+    "inputFiles": [
+      "wwwroot/js/lib/jquery-3.5.1.js",
+      "wwwroot/js/lib/popper-2.5.4.js",
+      "wwwroot/js/lib/bootstrap.bundle-4.1.3.js",
+      "wwwroot/js/lib/jquery.validate.js",
+      "wwwroot/js/lib/jquery.validate.unobtrusive.js",
+      "wwwroot/js/lib/printThis.js",
+      "wwwroot/js/lib/echo-1.7.3.js",
+      "wwwroot/js/site.js"
+    ]
+  }
+]

@@ -1,0 +1,66 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@{
+    ViewData["Title"] = "Our Brands";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/OurBrands.css" />
+}
+
+<div class="container our-brands">
+    @if (Model.PagesWithSections != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered header-content-without-card">
+                        <div class="col-lg-12 text-center">
+                            <div class="header-txt header-text-background">
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <div>
+                                    @Html.Raw((@parentSections.Content))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithBackground)
+                {
+                    @foreach (var sections in pageWithSections.Sections)
+                    {
+                        if (sections.ParentSectionId == parentSections.Id && sections.SectionOrder % 2 != 0)
+                        {
+                            <div class="row centered card-padding">
+                                <div class="col-lg-4 brand-img centered box-shadow">
+                                    <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                </div>
+                                <div class="col-lg-4 brand-text offset-lg-2">
+                                    <h2>@Html.DisplayFor(modelItem => sections.TitleLarge)</h2>
+                                    @Html.Raw((@sections.Content))
+                                </div>
+                            </div>
+                        }
+                        else if (sections.ParentSectionId == parentSections.Id && sections.SectionOrder % 2 == 0)
+                        {
+                            <div class="row centered card-padding mobile-order">
+                                <div class="col-lg-4 brand-text">
+                                    <h2>@Html.DisplayFor(modelItem => sections.TitleLarge)</h2>
+                                    @Html.Raw((@sections.Content))
+                                </div>
+                                <div class="col-lg-4 brand-img centered offset-lg-2 box-shadow">
+                                    <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        }
+    }
+</div>

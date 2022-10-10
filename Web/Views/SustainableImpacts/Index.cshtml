@@ -1,0 +1,230 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@{
+    ViewData["Title"] = "Sustainable Impacts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/SImpact.css" />
+}
+<div class="container-fluid sustainable-impact">
+      @if (Model.PagesWithSections != null)
+      {
+          foreach (var pageWithSections in Model.PagesWithSections)
+          {
+              foreach (var parentSections in pageWithSections.ParentSections)
+              {
+                  if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+              {
+                    <div class="row centered facilites-heading">
+                        <div class="col-lg-8">
+                            <div class="row px-4">
+                                <div class="col-lg-12 text-center p-0">
+                                    <div class="header-txt header-text-background">
+                                        <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                        <div class="padding-for-mobile">
+                                            @Html.Raw((@parentSections.Content))
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+               if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered padding-bottom facilites">
+                        <div class="col-lg-8">
+                            <div class="row px-4">
+                                @foreach (var sections in pageWithSections.Sections)
+                                {
+                                    if (sections.ParentSectionId == parentSections.Id)
+                                    {
+                                        <div class="col-lg-3 card">
+                                            <div class="icon-title">
+                                                <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="image">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h5>
+                                                    <div class="card-text">
+                                                        @Html.Raw((@sections.Content))
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+              }
+              
+          }
+      }
+    <div class="row padding-bottom justify-content-center">
+        <div class="col-lg-8">
+            <div class="row sustainable-slider">
+                <div id="si-carousel" class="carousel slide w-100" data-ride="carousel">
+                    <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="col-lg-12">
+                            <div class="sustainable-img text-right d-none d-lg-block">
+                                <img class="border-redious box-shadow" src="/images/sustainableImpacts/sustainableImpacts/DH stands by 72,000 Disadvantaged Families in Khulna & Barisal.jpg" alt="image">
+                            </div>
+                            <div class="card box-shadow">
+                                <img class="card-img-top border-redious d-block d-lg-none" src="@Url.Content("~/images/sustainableImpacts/sustainableImpacts/DH stands by 72,000 Disadvantaged Families in Khulna & Barisal.jpg")" alt="image">
+                                <div class="card-body">
+                                    <h4 class="card-subtitle text-left ">Corona Care</h4>
+                                    <h1 class="card-title text-left">
+                                        DH stands by 72,000 Disadvantaged Families in Khulna & Barisal
+                                    </h1>
+                                    <p class="show-read-more text-justify">
+                                        Digital Health Care Solutions (DH), in collaboration with UK Aid and under the supervision of Concern Worldwide,
+                                        has launched a campaign to provide preventive measures against the COVID-19 to the disadvantaged people in Khulna and Barisal
+                                        who have limited access to healthcare due to them living in very remote areas combined with natural disasters such as flooding
+                                        and hurricanes which is almost a regular occurrence there.
+                                    </p>
+                                    <button class="readmoreBtn">Read More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="col-lg-12">
+                            <div class="sustainable-img text-right d-none d-lg-block">
+                                <img class="border-redious box-shadow " src="/images/sustainableImpacts/sustainableImpacts/100,000 Insured with Corona Insurance from DH.jpg" alt="image">
+                            </div>
+                            <div class="card box-shadow">
+                                <img class="card-img-top border-redious d-block d-lg-none" src="/images/sustainableImpacts/sustainableImpacts/100,000 Insured with Corona Insurance from DH.jpg" alt="image">
+                                <div class="card-body">
+                                    <h4 class="card-subtitle text-left ">Corona Care</h4>
+                                    <h1 class="card-title text-left ">100,000 Insured with Corona Insurance from DH </h1>
+                                    <p class="show-read-more text-justify">
+                                        It has become exceedingly difficult for millions of patients to get medical care due
+                                        to the COVID-19 pandemic which has almost brought the whole world on still in
+                                        a mere few months. The same happened for Bangladesh, when a countrywide lockdown
+                                        was announced in late March. Due to this, overnight hundreds of thousands of blue-collar
+                                        workers were out of work with no other source of income. Not only was their livelihood disrupted,
+                                        but many of these people had little to no access to healthcare facilities.
+                                    </p>
+                                    <button class="readmoreBtn">Read More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="col-lg-12">
+                            <div class="sustainable-img text-right d-none d-lg-block">
+                                <img class="border-redious box-shadow " src="/images/sustainableImpacts/sustainableImpacts/Helping Diabetic Patients through PSP.jpg" alt="image">
+                            </div>
+                            <div class="card box-shadow">
+                                <img class="card-img-top border-redious d-block d-lg-none" src="/images/sustainableImpacts/sustainableImpacts/Helping Diabetic Patients through PSP.jpg" alt="image">
+                                <div class="card-body">
+                                    <h4 class="card-subtitle text-left ">Diabetic Programmes</h4>
+                                    <h1 class="card-title text-left ">Helping Diabetic Patients through PSP</h1>
+                                    <p class="show-read-more text-justify">
+                                        According to the International Diabetes Federation, some 8,372,200 adults suffer from diabetes in Bangladesh. A diabetes patient can face life-threatening complications like heart attack, stroke, damages in kidney and nerve system, and blindness if not properly treated and with an increasing number of Diabetic cases in the country especially in the urban areas, it is a rather big concern.
+                                    </p>
+                                    <button class="readmoreBtn">Read More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="col-lg-12">
+                            <div class="sustainable-img text-right d-none d-lg-block">
+                                <img class="border-redious box-shadow " src="/images/sustainableImpacts/sustainableImpacts/Providing Healthcare Packages Through Scratch Cards.jpg" alt="image">
+                            </div>
+                            <div class="card box-shadow">
+                                <img class="card-img-top border-redious d-block d-lg-none" src="/images/sustainableImpacts/sustainableImpacts/Providing Healthcare Packages Through Scratch Cards.jpg" alt="image">
+                                <div class="card-body">
+                                    <h4 class="card-subtitle text-left ">Innovation </h4>
+                                    <h1 class="card-title text-left ">Providing Healthcare Packages Through Scratch Cards</h1>
+                                    <p class="show-read-more text-justify">
+                                        One of the biggest problems faced by the poor and rural people of Bangladesh is even though healthcare services are available, they might not always be easily accessible for them due to various reasons. And this lack of accessibility of the healthcare services often leads them to ignore health issues which later on becomes serious and fatal in some cases even though treatment in the initial stages could have easily resolved them.
+                                    </p>
+                                    <button class="readmoreBtn">Read More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="col-lg-12">
+                            <div class="sustainable-img text-right d-none d-lg-block">
+                                <img class="border-redious box-shadow " src="/images/sustainableImpacts/sustainableImpacts/DH Launches the Country’s First Triage and Sample Collection Booth.jpg" alt="image">
+                            </div>
+                            <div class="card box-shadow">
+                                <img class="card-img-top border-redious d-block d-lg-none" src="~/images/sustainableImpacts/sustainableImpacts/DH Launches the Country’s First Triage and Sample Collection Booth.jpg" alt="image">
+                                <div class="card-body">
+                                    <h4 class="card-subtitle text-left ">COVID-19</h4>
+                                    <h1 class="card-title text-left ">DH Launches Country’s 1st COVID-19 Sample Collection Booth</h1>
+                                    <p class="show-read-more text-justify">
+                                        Digital Healthcare Solutions (DH) along with the Institute for Developing Science and Health Initiatives (ideSHi) and Mugda Medical College Hospital (MuMCH) has jointly launched the country’s first one-stop digital booth for COVID-19 screening and testing, in June.
+                                    </p>
+                                    <button class="readmoreBtn">Read More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-none d-lg-flex">
+                        <a class="control-previous" href="#si-carousel" role="button" data-slide="prev">
+                            <img class="img-fluid" src="/images/sustainableImpacts/previous.svg" alt="previous">
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <ol class="carousel-indicators">
+                            <li data-target="#si-carousel" data-slide-to="0" class="active zoom-mini-slider">
+                                <img class="img-fluid " src="/images/sustainableImpacts/mini slider/DH stands by 72,000 Disadvantaged Families in Khulna _ Barisal-02.png" alt="image">
+
+                            </li>
+                            <li class="zoom-mini-slider" data-target="#si-carousel" data-slide-to="1">
+                                <img class="img-fluid" src="/images/sustainableImpacts/mini slider/100,000 Insured with Corona Insurance from DH.png" alt="image">
+
+                            </li>
+                            <li class="zoom-mini-slider" data-target="#si-carousel" data-slide-to="2">
+                                <img class="img-fluid" src="/images/sustainableImpacts/mini slider/Helping Diabetic Patients through PSP.jpg" alt="image">
+
+                            </li>
+                            <li class="zoom-mini-slider" data-target="#si-carousel" data-slide-to="3">
+                                <img class="img-fluid" src="/images/sustainableImpacts/mini slider/Providing Healthcare Packages Through Scratch Cards -02.png" alt="image">
+
+                            </li>
+                            <li class="zoom-mini-slider" data-target="#si-carousel" data-slide-to="4">
+                                <img class="img-fluid" src="/images/sustainableImpacts/mini slider/DH Launches the Country’s First Triage and Sample Collection Booth.jpg" alt="image">
+
+                            </li>
+                        </ol>
+                        <a class="control-next" href="#si-carousel" role="button" data-slide="next">
+                            <img class="img-fluid" src="/images/sustainableImpacts/next.svg" alt="next">
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+                    <div class="mobile-slider d-flex d-lg-none">
+                        <a class="control-previous" href="#si-carousel" role="button" data-slide="prev">
+                            <img class="img-fluid" src="/images/partners/leftArrow.svg" alt="previous">
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="control-next" href="#si-carousel" role="button" data-slide="next">
+                            <img class="img-fluid" src="/images/partners/rightArrow.svg" alt="next">
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        @*popup video player*@
+        @await Html.PartialAsync("~/Views/SustainableImpacts/_ReadMorePopup.cshtml", Model)
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/ModalPopup.js"></script>
+}
+

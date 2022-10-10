@@ -1,0 +1,89 @@
+﻿@model List<Web.ViewModels.PageViewModel>
+
+@{
+    ViewData["Title"] = "Page";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+
+<h1>
+    Pages
+</h1>
+<div class="row pt-5">
+    <div class="col-lg-4">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Page Name</th>
+                    <th scope="col">Enabled</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        @*<td> @m.Name</td>*@
+                         <td><a href="@Url.Action(@m.Action, @m.Controller)" target="_blank">@m.Name</a></td>
+                        <td><input type="checkbox" checked="@m.IsEnabled" value="@m.Id" /></td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="button" id="btn-save" class="btn btn-info pt-2" style="float: right;" disabled>Save</button>
+        <div class="section-list lds-spinner" style="top: -19px;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div class="col-lg-8"></div>
+</div>
+
+@section Scripts{
+    <script>
+    $(document).ready(() => {
+        $('input[type=checkbox]').on('click', () => {
+            $('#btn-save').prop('disabled', '');
+        });
+
+        $('#btn-save').on('click', () => {
+            var model = [];
+                $('input[type=checkbox]').each(function() {
+                    var this_row = {};
+                    if ($(this).prop('checked')==true)
+                    {
+                        Id = $(this).val();
+                        IsEnabled = true;
+                    }
+                    else {
+                        Id = $(this).val();
+                        IsEnabled = false;
+                    }
+                    model.push( {
+                     Id: Id,
+                     IsEnabled: IsEnabled
+                   });
+                });
+            $.ajax({
+                    url: '@Url.Action("Update", "Page")',
+                    type: "POST",
+                    data: { model: model},
+                    beforeSend: () => {
+                        $('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                success: response => {
+                    alert("PageList Updated Successfully!")
+                        console.log(response);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        $('.section-list.lds-spinner').css('display', 'none');
+                        $('#btn-save').prop('disabled', true);
+                    }
+                });
+
+
+        });
+    });
+    </script>
+}

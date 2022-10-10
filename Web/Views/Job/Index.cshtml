@@ -1,0 +1,259 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+
+    .post-logo {
+        position: absolute;
+        right: 2rem;
+        top: -10rem;
+    }
+
+    .r-block {
+        width: 6rem;
+        position: absolute;
+        left: 0;
+    }
+
+    .padding-left {
+        padding-left: 7rem;
+    }
+
+    .padding-top {
+        padding-top: 2rem;
+    }
+
+    #submitBtn {
+        width: 14rem;
+        margin: 4rem 0rem 2rem 2rem;
+        background: #2F8F9C;
+        color: #ffffff;
+        border-radius: 10px;
+        border: none;
+        float: right;
+    }
+
+    .field-validation-error {
+        width: 100%;
+    }
+    
+</style>
+<div class="row padding-top">
+    <div class="col-lg-6 jobPost">
+        @using (Html.BeginForm("Index", "Job", FormMethod.Post, new { @id = "jobForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    @Model.SuccessMessage
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    @Model.ErrorMessage
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            }
+            <p class="line-height">
+                <h5 class="text-center">We are Hiring!</h5>
+                <br />
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.JobPost.Intro, new { @class = "form-control", placeholder = "Introduction of the post", @rows = 4 })
+                    @Html.ValidationMessageFor(m => m.JobPost.Intro)
+                </div>
+
+            </p>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Position</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPost.Postion, new { @class = "form-control", placeholder = "Position Name" })
+                    @Html.ValidationMessageFor(m => m.JobPost.Postion)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Job Code</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPost.JobCode, new { @class = "form-control", placeholder = "Job Code", @type = "number", @min = 1 })<br />
+                    @Html.ValidationMessageFor(m => m.JobPost.JobCode)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Type of Employment</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPost.EmploymentType, new { @class = "form-control", placeholder = "Type of Employment" })<br />
+                    @Html.ValidationMessageFor(m => m.JobPost.EmploymentType)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Job Location</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPost.JobLocation, new { @class = "form-control", placeholder = "Job Location" })
+                    @Html.ValidationMessageFor(m => m.JobPost.JobLocation)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">DeadLine</span>
+                    </div>
+                    @Html.TextBoxFor(m => m.JobPost.DeadLine, new { @class = "form-control", @type = "date" })
+                    @Html.ValidationMessageFor(m => m.JobPost.DeadLine)
+                </div>
+            </div>
+            <h4>Job Description/Responsibilities:</h4>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPost.JobDescription, new
+                {
+                    @class = "form-control",
+                    placeholder = "Each new line must be started with a number followed by a fullstop,  e.g:\n\n" +
+               "1. First responsibility\n" +
+               "2. Second responsibility",
+                    @rows = 5
+                })
+                @Html.ValidationMessageFor(m => m.JobPost.JobDescription)
+            </div>
+            <h4>Job Specifications:</h4>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPost.JobSpecification, new
+                {
+                    @class = "form-control",
+                    placeholder = "Each new line must be started with a number followed by a fullstop,  e.g:\n\n" +
+               "1. First specification\n" +
+               "2. Second specification",
+                    @rows = 4
+                })
+                @Html.ValidationMessageFor(m => m.JobPost.JobSpecification)
+            </div>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.JobPost.ApplyProcess, new { @class = "form-control", placeholder = "Apply Procedure", @rows = 4 })
+                @Html.ValidationMessageFor(m => m.JobPost.ApplyProcess)
+            </div>
+            <button type="submit" class="btn" id="submitBtn">Save</button>
+        }
+    </div>
+    <div class="col-lg-6">
+        <div class="row">
+            <div class="col-lg-12 text-center pb-5">
+                <h3>All Jobs</h3>
+            </div>
+            <div class="col-lg-12">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Job Status</th>
+                            <th scope="col">Job Title</th>
+                            <th scope="col">Deadline</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.JobPosts != null)
+                        {
+                            foreach (var jopPosts in Model.JobPosts)
+                            {
+                                <tr class="job-table" id="@jopPosts.JobCode">
+                                    <td> 
+                                       @*<input type="checkbox" checked="@jopPosts.IsActive" value="@jopPosts.Id" />*@
+                                        <input type="checkbox" checked="@jopPosts.IsActive" value="@jopPosts.Id"  data-toggle="toggle" data-on="Active" data-off="Inactive" data-onstyle="success" data-offstyle="danger">
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => jopPosts.JobCode)
+                                        @Html.DisplayFor(modelItem => jopPosts.Postion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => jopPosts.DeadLine)
+                                    </td>
+                                    <td class="d-flex"> 
+                                        @Html.ActionLink("", "JobPostDetails", "Job", new { jobId = jopPosts.JobCode }, new { @class = "btn fa fa-edit" })
+                                        @Html.ActionLink("", "Delete", "Job", new { Id = jopPosts.Id }, new { @class = "btn fa fa-trash" })
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('input[type=checkbox]').change(function () {
+                var id = $(this).prop('value');
+                var isActive = this.checked ? true : false;
+
+                if (confirm("Do you want to update this job post?")) {
+                   $.ajax({
+                        url: '@Url.Action("UpdateJobStatus", "Job")',
+                        type: "POST",
+                        data: {Id: id,IsActive: isActive },
+                        beforeSend: function() {
+                        },
+                       success: function (response) {
+                            if (isActive) {
+                               $(this).prop('checked', true);;
+                           }
+                           else {
+                               $(this).prop('checked', false);;
+                           }
+                            //alert("Job Post Updated Successfully!")
+                            console.log(response);
+                        
+                        },
+                        error: function(xhr) {
+                            alert("Something went wrong, please contact Admin");
+                            console.error(xhr);
+                        },
+                       complete: function () {
+                           
+                        }
+                   });
+                }  
+            });
+
+            //show Job details on click
+            @*$('.job-table').on("click", function () {
+                var jobId = $(this).prop('id');
+                window.location.href = '@Url.Action("JobPostDetails", "Job")?jobId=' + jobId ;
+            });*@
+        });
+       
+    </script>
+ <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+}
+

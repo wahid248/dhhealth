@@ -1,0 +1,299 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using System.Web;
+@using Core.Enums.SectionType
+
+@{
+    ViewData["Title"] = "JobPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Meta{
+    <meta property="og:url" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="We are Hiring | Digital Healthcare Solutions" />
+    <meta property="og:description" content="@Model.JobPostDetails.Postion" />
+    <meta property="og:image" content="https://dh.health/images/career-cover.png" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="We are Hiring | Digital Healthcare Solutions" />
+    <meta name="twitter:description" content="@Model.JobPostDetails.Postion">
+    <meta name="twitter:image" content="https://dh.health/images/career-cover.png">
+    <meta name="twitter:domain" content="">
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Career.css" />
+}
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox */
+    }
+    .post-logo {
+        position: absolute;
+        right: 2rem;
+        top: -10rem;
+    }
+    .r-block {
+        width: 6rem;
+        position: absolute;
+        left: 0;
+    }
+    .padding-left {
+        padding-left: 7rem;
+    }
+    .padding-top {
+        padding-top: 2rem;
+    }
+    .modal-backdrop {
+        z-index: -1;
+    }
+    .modal-content {
+        background: none;
+        border: none;
+    }
+</style>
+
+<div class="container">
+    @if (Model.JobPostDetails != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered header-content-without-card">
+                        <div class="col-lg-12 text-center">
+                            <div class="header-txt header-text-background">
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <div class="padding-for-mobile">
+                                    @Html.Raw((@parentSections.Content))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+        }
+        <div class="row padding-top">
+            <div class="col-lg-12 text-center">
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        @Model.SuccessMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        @Model.ErrorMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-12 padding-left jobPost">
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <h4>Career Opportunity</h4>
+                <p class="line-height">
+                    <h5 class="text-center">We are Hiring!</h5>
+                    @Html.Raw(HttpUtility.HtmlEncode(Model.JobPostDetails.Intro).Replace("\n", "<br/>"))
+                </p>
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <h4>Position</h4>
+                <p class="jobTitle">
+                    @Html.DisplayFor(model => model.JobPostDetails.Postion)
+                </p>
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <h4>Job Code</h4>
+                <p class="jobCode">
+                    @Html.DisplayFor(model => model.JobPostDetails.JobCode)
+                </p>
+                @if (Model.JobPostDetails.EmploymentType != null)
+                {
+                    <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                    <h4>Type of Employment</h4>
+                    <p class="jobEmployment">
+                        @Html.DisplayFor(model => model.JobPostDetails.EmploymentType)
+                    </p>
+                }
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <h4>Job Description/Responsibilities:</h4>
+                <ul>
+                    @foreach (var item in Model.JobPostDetails.JobDescriptionArr)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <h4>Job Specifications:</h4>
+                <ul>
+                    @foreach (var item in Model.JobPostDetails.JobSpecificationArr)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+                <img class="img-fluid r-block" src="/images/career/Rectangle.svg" alt="" />
+                <div>
+                    @*@Html.Raw(HttpUtility.HtmlEncode(Model.JobPostDetails.ApplyProcess).Replace("\n", "<br/>"));*@
+                    @Html.Raw(Model.JobPostDetails.ApplyProcess)
+                </div>
+            </div>
+
+        </div>
+        <div class="row padding-bottom">
+            <div class="col-lg-12 padding-left">
+                @*<button class="btn readBtn btn-print">Print</button>*@
+                @*<button class="btn readBtn" onclick="visibility()">Apply</button>*@
+                @*<button type="button" class="btn readBtn" data-toggle="modal" data-target="#applyJobModal">Apply</button>*@
+                <!-- share button popover  -->
+                <div class="popover-block-container">
+                    <a href="#" tabindex="0" data-popover-content="#unique-id" data-toggle="popover" data-placement="right" id="shareBtn"><img class="img-fluid margin-top-share-image shareBtn" src="/images/news/share.svg" alt=""></a>
+                    <div id="unique-id" style="display:none;">
+                        <div class="popover-body" id="test">
+                            <h5 class="pt-3 pb-2 text-center">SHARE THIS JOB</h5>
+                            <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                            <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                            <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End share button popover  -->
+            </div>
+        </div>
+
+    }
+</div>
+<div class="modal" id="applyJobModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 middled" id="apply-now">
+                        @using (Html.BeginForm("JobPost", "Career", FormMethod.Post, new { @id = "jobPostForm", @class = "box-shadow", enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.JobApplicantViewModel.Name, new { @class = "form-control", placeholder = "Name" })
+                                @Html.ValidationMessageFor(m => m.JobApplicantViewModel.Name)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.JobApplicantViewModel.PhoneNo, new { @class = "form-control", placeholder = "Contact No", @type = "number" })
+                                @Html.ValidationMessageFor(m => m.JobApplicantViewModel.PhoneNo)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.JobApplicantViewModel.Email, new { @class = "form-control", @type = "email", placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.JobApplicantViewModel.Email)
+                            </div>
+                            @Html.HiddenFor(m => m.JobPostDetails.Postion)
+
+                            @Html.HiddenFor(m => m.JobPostDetails.JobCode)
+                            <div class="form-group">
+                                <input type="file" class="form-control" name="JobApplicantViewModel.Attachment" id="attachment-cv" hidden="hidden" />
+                                <button type="button" id="custom-button">Attach Your CV</button>
+                                <p id="custom-text">*No file selected.</p>
+                            </div>
+
+                            <button type="submit" class="btn" id="submitBtn">Send</button>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+}
+<script>
+    $(document).ready(function () {
+        $('#applyJobModal').on('shown.bs.modal', function () {
+            $('#jobPostForm')[0].reset();
+        });
+
+        $("#submitBtn").on("click", function (e) {
+            e.preventDefault();
+            $(this).prop("disabled", true);
+            $("#jobPostForm").submit();
+        });
+
+        //print job post
+        $('body').on('click', '.btn-print', function (e) {
+            e.preventDefault();
+            let elem = $('.jobPost').clone();
+            elem.find('.post-logo').remove();
+            elem.find('.r-block').remove();
+            elem.css({ 'padding': '0px' });
+            $('<div></div>').css({ 'margin': '96px' }).append(elem).printThis(); // 96px = 1 inch = A4 paper margin
+        });
+
+        //share button popover
+        var url = encodeURIComponent(window.location.href);
+        $("meta[property='og\\:url']").prop('content', url);
+        $("meta[name='twitter:domain']").prop('content', url);
+
+        $('#shareBtn').on("click", function (e) {
+            e.preventDefault();
+            var tweet = encodeURIComponent($("meta[name='twitter:description']").attr("content"));
+            $('a.fbShare, a.twitterShare, a.linkedinShare').attr('target', '_blank');
+            $("a.fbShare").prop('href', 'https://www.facebook.com/sharer.php?u=' + url);
+            $("a.twitterShare").prop('href', 'https://twitter.com/intent/tweet?url=' + url + "&text=" + tweet);
+            $('a.linkedinShare').prop('href', 'https://www.linkedin.com/shareArticle?mini=true&url=' + url);
+        });
+
+        $("[data-toggle=popover]").popover({
+            html: true,
+            trigger: 'focus',
+            content: function () {
+                return $('.popover-body').html();
+            }
+        });
+
+        //apply form custom file upload event
+        const realFileBtn = document.getElementById("attachment-cv");
+        const customBtn = document.getElementById("custom-button");
+        const customTxt = document.getElementById("custom-text");
+
+        if (customBtn) {
+            customBtn.addEventListener("click", function () {
+                realFileBtn.click();
+            });
+        }
+        if (realFileBtn) {
+            realFileBtn.addEventListener("change", function () {
+                if (realFileBtn.value) {
+                    customTxt.innerHTML = realFileBtn.value.match(
+                        /[\/\\]([\w\d\s\.\-\(\)]+)$/
+                    )[1];
+                } else {
+                    customTxt.innerHTML = "*No file selected.";
+                }
+            });
+        }
+    });
+
+    //apply form hide/show
+    function visibility() {
+        var x = document.getElementById("apply-now");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+

@@ -1,0 +1,495 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@{
+    ViewData["Title"] = "Partner With Us";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/PartnerWithUs.css" />
+}
+<div class="container partner-with-us">
+    @if (Model.PagesWithSections != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            int count = 0;
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+                if (count == 1)
+                {
+                    <div class="row centered section-padding">
+                        <div class="col-lg-12 text-center">
+                            <h1>Digital Healthcare Services</h1>
+                            <p class="text-center">
+                                Through a wide range of services such as Doctor Call, Video Call, Chat and Free Health Cashback, DH provides
+                                comprehensive health solutions.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row padding-bottom d-none d-md-block">
+                        <div class="lazy-load-gif">
+                            <img class="img-fluid w-100" data-echo="/images/partners/Partner with us icons-01.svg" alt="">
+                            <div class="loader"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
+                    <div class="row padding-bottom d-block d-md-none">
+                        <div class="lazy-load-gif">
+                            <img class="img-fluid w-100" data-echo="/images/partners/Partner with us icons_Mobile.svg" alt="">
+                            <div class="loader"><div></div><div></div><div></div><div></div></div>
+                        </div>
+                    </div>
+
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered header-content-without-card">
+                        <div class="col-lg-12 text-center">
+                            <div class="header-txt header-text-background">
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <div class="padding-for-mobile">
+                                    @Html.Raw((@parentSections.Content))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-lg-12 corporate text-center">
+                            @if (parentSections.TitleLargeOnTop)
+                            {
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <h4 style="color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                            }
+                            else
+                            {
+                                <h4 style="color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                            }
+                            <div>
+                                @Html.Raw((@parentSections.Content))
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithBackground && count == 1)
+                {
+                    <div class="row padding-bottom">
+                        @foreach (var sections in pageWithSections.Sections)
+                        {
+                            if (sections.ParentSectionId == parentSections.Id)
+                            {
+                                <div class="col-lg-3 pb-4">
+                                    <div class="card box-shadow our-corporate">
+                                        <img class="card-img-top" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                        <p>@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                        <div class="card-body">
+
+                                            @if (sections.TitleLargeOnTop)
+                                            {
+                                                <h6 class="card-title pt-4">@Html.DisplayFor(modelItem => sections.TitleLarge)</h6>
+                                                <div class="card-subtitle">@Html.DisplayFor(modelItem => sections.TitleSmall)</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="card-subtitle card-content">@Html.DisplayFor(modelItem => sections.TitleSmall)</div>
+                                                <h6 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h6>
+                                            }
+                                            <div>
+                                                @Html.Raw((@sections.Content))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithBackground && count == 2)
+                {
+                    <div class="row testimonial">
+                        @foreach (var sections in pageWithSections.Sections)
+                        {
+                            if (sections.ParentSectionId == parentSections.Id)
+                            {
+                                <div class="col-lg-4 padding-top">
+                                    <div class="card box-shadow">
+
+                                        <div class="card-body clients">
+                                            <div class="our-clients">
+                                                <img class="" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                                <p class="">@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                                <div>
+                                                    @if (sections.TitleLargeOnTop)
+                                                    {
+                                                        <h4 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                                        <div class="card-subtitle">@Html.Raw((@sections.TitleSmall))</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="card-subtitle">@Html.Raw((@sections.TitleSmall))</div>
+                                                        <h4 class="card-title">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div>
+                                                @Html.Raw((@sections.Content))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                count++;
+            }
+        }
+    }
+
+    <div class="partners padding-bottom d-none d-lg-block">
+        <div class="row centered">
+            <h1>Our Corporate Clients</h1>
+        </div>
+        <div id="partnerCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_MetLife.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        MetLife Sathe Achi is a joint campaign between DH and MetLife launched to serve customers to support 1.2 million customers and agents of Metlife during COVID-19 through free doctor consultations via audio call,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_SANOFI.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        DH, together with Sanofi, one of the top pharmaceutical brands, has started the ‘Diabetic Patient Support Program’ for the first time in Bangladesh.
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_swiss contact.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        Achieving Sustainability Towards Healthcare Access (ASTHA), a Swisscontact project, collaborated with DH to create health awareness in Bangladesh's marginalized rural areas. So far, they have successfully arranged 33+ Health Camps
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-lg-4 pt-4">
+                                <div class="card box-shadow">
+                                    <img class="card-img-top" src="/images/partners/our partners/Our Partners_Save the Children.png" alt="">
+
+                                    <div class="card-body">
+                                        <p>
+                                            Save the Children Bangladesh, along with DH, under the sponsorship of USAID, have introduced ‘Digital Health’ to serve 150,000 marginalized families of RMG workers and urban slum dwellers in Dhaka,
+                                        </p>
+                                        <button class="btn readmoreBtn">Read more</button>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/ourPartners_sbu.png" alt="">
+                                <div class="card-body">
+                                    <p>
+                                        Digital Healthcare Solutions (DH), a social business committed to ensuring ‘Health For All’, partnered with USAID’s MaMoni Maternal and Newborn Care Strengthening Project by Concern Worldwide, has been launched to achieve sustainable improvements in health,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_Concern.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        The Essential Healthcare for Disadvantaged in Bangladesh (EHD), a consortium project funded by FCDO and lead by Concern Worldwide, has been launched to achieve sustainable improvements in health,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_MetLife.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        MetLife Sathe Achi is a joint campaign between DH and MetLife launched to serve customers to support 1.2 million customers and agents of Metlife during COVID-19 through free doctor consultations via audio call,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_SANOFI.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        DH, together with Sanofi, one of the top pharmaceutical brands, has started the ‘Diabetic Patient Support Program’ for the first time in Bangladesh.
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_swiss contact.png" alt="">
+
+                                <div class="card-body">
+                                    <p>
+                                        Achieving Sustainability Towards Healthcare Access (ASTHA), a Swisscontact project, collaborated with DH to create health awareness in Bangladesh's marginalized rural areas. So far, they have successfully arranged 33+ Health Camps
+
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-lg-4 pt-4">
+                                <div class="card box-shadow">
+                                    <img class="card-img-top" src="/images/partners/our partners/Our Partners_Save the Children.png" alt="">
+
+                                    <div class="card-body">
+                                        <p>
+                                            Save the Children Bangladesh, along with DH, under the sponsorship of USAID, have introduced ‘Digital Health’ to serve 150,000 marginalized families of RMG workers and urban slum dwellers in Dhaka,
+                                        </p>
+                                        <button class="btn readmoreBtn">Read more</button>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/ourPartners_sbu.png" alt="">
+                                <div class="card-body">
+                                    <p>
+                                        Digital Healthcare Solutions (DH), a social business committed to ensuring ‘Health For All’, partnered with USAID’s MaMoni Maternal and Newborn Care Strengthening Project by Concern Worldwide, has been launched to achieve sustainable improvements in health,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 pt-4">
+                            <div class="card box-shadow">
+                                <img class="card-img-top" src="/images/partners/our partners/Our Partners_Concern.png" alt="">
+                                <div class="card-body">
+                                    <p>
+                                        The Essential Healthcare for Disadvantaged in Bangladesh (EHD), a consortium project funded by FCDO and lead by Concern Worldwide, has been launched to achieve sustainable improvements in health,
+                                    </p>
+                                    <button class="btn readmoreBtn">Read more</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev d-lg-none d-lg-block" href="#partnerCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next d-lg-none d-lg-block" href="#partnerCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_MetLife.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        MetLife Sathe Achi is a joint campaign between DH and MetLife launched to serve customers to support 1.2 million customers and agents of Metlife during COVID-19 through free doctor consultations via audio call, chat, or video call. The campaign has also distributed BDT 6 million worth of financial support for COVID-19 treatment, funded by Metlife Bangladesh. So far, more than 119,000 people have been enrolled in this partnership.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_SANOFI.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        DH, together with Sanofi, one of the top pharmaceutical brands, has started the ‘Diabetic Patient Support Program’ for the first time in Bangladesh. Under this initiative, over 1500 patients have received tele-counseling and home-counselling services to manage their diabetes, where now 72% of patients have their diabetes under control compared to 23% previously.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_swiss contact.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        Achieving Sustainability Towards Healthcare Access (ASTHA), a Swisscontact project, collaborated with DH to create health awareness in Bangladesh's marginalized rural areas. So far, they have successfully arranged 33+ Health Camps providing general consultations & 56+ Interactive sessions (locally known as Uthan Baithok), creating awareness about general health, dangerous signs of pregnancy. The camps also include referral introduction to Community paramedics at different areas of Rangpur, Lalmonirhat, Nilphamari, Sylhet, Shunamganj, Patuakhali & Barguna. Starting in January 2019, the sessions also focus on engaging Community Paramedics with our doctors to train and provide superior knowledge to deliver better treatment.
+                    </p>
+                </div>
+            </div>
+        </div>
+        @*<div class="modal modal_multi">
+                <div class="custom-modal">
+                    <span class="close close_multi">×</span>
+                    <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_Save the Children.png" alt="">
+
+                    <div class="border-redious p-3">
+                        <p>
+                            Save the Children Bangladesh, along with DH, under the sponsorship of USAID, have introduced ‘Digital Health’ to serve 150,000 marginalized families of RMG workers and urban slum dwellers in Dhaka, Gazipur, Narayanganj, and Narsingdi. Through this project, marginalized people will access 24/7 doctor consultations, including specialist consultations for Gynaecology, Child, Skin & Mental Health, along with free health cashback.
+                        </p>
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/ourPartners_sbu.png" alt="">
+
+                <div class="border-redious p-3">
+                    <p>
+                        Digital Healthcare Solutions (DH), a social business committed to ensuring ‘Health For All’, partnered with USAID’s MaMoni Maternal and Newborn Care Strengthening Project: Emergency Response to COVID-19 Pandemic implemented by Save the Children in association with factories under BGMEA and BEPZA to serve 150,000 marginalized people of Bangladesh, including the RMG workers and slum dwellers of Dhaka, Gazipur, Narayanganj and Narsingdi. From 1st February till 30th June, the project provided free Shurokkhito package which included 24/7 doctor consultations via 08 000 111 000 (toll-free), specialist doctors of Gyneacology, Paediatrics, Dermatology, and Psychology, up to Tk. 20,000 Health Cashback covering Maternity and COVID-19 costs as well. Beneficiaries were able to avail Doctor Video Call through the Digital Hospital app.
+                        Digital Doctor Booths were also set up at 7 large factories to make Doctor Video Call more accessible even to those who do not have smartphones. 41 day-long Health Camps with MBBS doctors were carried out at the RMG factories and slums, allowing people to receive primary care face to face from the doctors. Over 10,000 consultations via Doctor Call, 650+ consultations with Specialist Doctors and Tk. 217,000+ has already been paid out as Health Cashback.
+
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_Concern.png" alt="">
+
+                <div class="border-redious p-3">
+                    <p>
+                        The Essential Healthcare for Disadvantaged in Bangladesh (EHD), a consortium project funded by FCDO and lead by Concern Worldwide, has been launched to achieve sustainable improvements in health, family planning, and nutrition outcomes among disadvantaged populations, including people with disabilities through reductions in morbidity and mortality and improvement in universal health coverage. So far, DH has catered to 72,000 families and overall, 220,000 disadvantaged people and people with disabilities in vulnerable areas in Khulna and Barishal as part of the EHD project.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_MetLife.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        MetLife Sathe Achi is a joint campaign between DH and MetLife launched to serve customers to support 1.2 million customers and agents of Metlife during COVID-19 through free doctor consultations via audio call, chat, or video call. The campaign has also distributed BDT 6 million worth of financial support for COVID-19 treatment, funded by Metlife Bangladesh. So far, more than 119,000 people have been enrolled in this partnership.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_SANOFI.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        DH, together with Sanofi, one of the top pharmaceutical brands, has started the ‘Diabetic Patient Support Program’ for the first time in Bangladesh. Under this initiative, over 1500 patients have received tele-counseling and home-counselling services to manage their diabetes, where now 72% of patients have their diabetes under control compared to 23% previously.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_swiss contact.png" alt="">
+                <div class="border-redious p-3">
+                    <p>
+                        Achieving Sustainability Towards Healthcare Access (ASTHA), a Swisscontact project, collaborated with DH to create health awareness in Bangladesh's marginalized rural areas. So far, they have successfully arranged 33+ Health Camps providing general consultations & 56+ Interactive sessions (locally known as Uthan Baithok), creating awareness about general health, dangerous signs of pregnancy. The camps also include referral introduction to Community paramedics at different areas of Rangpur, Lalmonirhat, Nilphamari, Sylhet, Shunamganj, Patuakhali & Barguna. Starting in January 2019, the sessions also focus on engaging Community Paramedics with our doctors to train and provide superior knowledge to deliver better treatment.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal modal_multi">
+                <div class="custom-modal">
+                    <span class="close close_multi">×</span>
+                    <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_Save the Children.png" alt="">
+
+                    <div class="border-redious p-3">
+                        <p>
+                            Save the Children Bangladesh, along with DH, under the sponsorship of USAID, have introduced ‘Digital Health’ to serve 150,000 marginalized families of RMG workers and urban slum dwellers in Dhaka, Gazipur, Narayanganj, and Narsingdi. Through this project, marginalized people will access 24/7 doctor consultations, including specialist consultations for Gynaecology, Child, Skin & Mental Health, along with free health cashback.
+                        </p>
+                    </div>
+                </div>
+            </div>*@
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/ourPartners_sbu.png" alt="">
+
+                <div class="border-redious p-3">
+                    <p>
+                        Digital Healthcare Solutions (DH), a social business committed to ensuring ‘Health For All’, partnered with USAID’s MaMoni Maternal and Newborn Care Strengthening Project: Emergency Response to COVID-19 Pandemic implemented by Save the Children in association with factories under BGMEA and BEPZA to serve 150,000 marginalized people of Bangladesh, including the RMG workers and slum dwellers of Dhaka, Gazipur, Narayanganj and Narsingdi. From 1st February till 30th June, the project provided free Shurokkhito package which included 24/7 doctor consultations via 08 000 111 000 (toll-free), specialist doctors of Gyneacology, Paediatrics, Dermatology, and Psychology, up to Tk. 20,000 Health Cashback covering Maternity and COVID-19 costs as well. Beneficiaries were able to avail Doctor Video Call through the Digital Hospital app.
+                        Digital Doctor Booths were also set up at 7 large factories to make Doctor Video Call more accessible even to those who do not have smartphones. 41 day-long Health Camps with MBBS doctors were carried out at the RMG factories and slums, allowing people to receive primary care face to face from the doctors. Over 10,000 consultations via Doctor Call, 650+ consultations with Specialist Doctors and Tk. 217,000+ has already been paid out as Health Cashback.
+
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal_multi">
+            <div class="custom-modal">
+                <span class="close close_multi">×</span>
+                <img class="border-redious p-3 img-center" src="/images/partners/our partners/Our Partners_Concern.png" alt="">
+
+                <div class="border-redious p-3">
+                    <p>
+                        The Essential Healthcare for Disadvantaged in Bangladesh (EHD), a consortium project funded by FCDO and lead by Concern Worldwide, has been launched to achieve sustainable improvements in health, family planning, and nutrition outcomes among disadvantaged populations, including people with disabilities through reductions in morbidity and mortality and improvement in universal health coverage. So far, DH has catered to 72,000 families and overall, 220,000 disadvantaged people and people with disabilities in vulnerable areas in Khulna and Barishal as part of the EHD project.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*popup video player*@
+    @await Html.PartialAsync("~/Views/PartnerWithUs/_PartnerSliderMobile.cshtml")
+
+    <div class="row padding-bottom">
+        <div class="col-lg-12 text-center py-2">
+            <a class="btn partnerBtn mailto" href="mailto:partnership@dh.health">Partner With Us</a>
+        </div>
+    </div>
+</div>
+
+@*popup video player*@
+@await Html.PartialAsync("~/Views/WhoWeAre/_PlayVideoPopup.cshtml")
+
+@section Scripts{
+    <script src="~/js/ModalPopup.js"></script>
+}

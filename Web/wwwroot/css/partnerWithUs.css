@@ -1,0 +1,243 @@
+﻿.card {
+    min-height: 34rem;
+    height: 100%;
+    border: none;
+    border-radius: 1rem;
+}
+.play-btn {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.testimonial{
+    padding-bottom: 5rem;
+}
+.testimonial .card {
+    padding: 1rem;
+}
+.testimonial .card img {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background-color: #F2F2F7;
+}
+.testimonial .card .card-title {
+    top: -7rem;
+    position: relative;
+    margin-left: 7rem;
+}
+.testimonial .card .card-subtitle {
+    margin-top: -7rem;
+    margin-bottom: 2rem;
+    position: relative;
+    margin-left: 7rem;
+    font-size: .8rem;
+}
+.clients{
+    padding: 0.75rem;
+}
+.audio-visual {
+    background-color: #2f8f9c1a;
+}
+.partners .card {
+    min-height: 28rem;
+    height: 100%;
+}
+.partners .card .card-img-top{
+    width: auto;
+    height: 9rem;
+    align-self: center;
+    padding: 1.5rem;
+}
+.partners .card .card-body{
+    display:flex;
+    flex-flow:column;
+}
+.carousel-item {
+    padding: 2rem;
+}
+.carousel-control-prev {
+    margin-left: -5rem;
+}
+.carousel-control-next {
+    margin-right: -5rem;
+}
+.carousel-control-prev,
+.carousel-control-next {
+    top: 50%;
+    bottom: 50%;
+    opacity: .9;
+}
+.carousel-control-prev:hover ,
+.carousel-control-next:hover {
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Safari 3-8 */
+    transform: scale(1.1); 
+    opacity:1;
+}
+.carousel-control-next-icon {
+    background-image: url(\\images/partners/rightArrow.svg);
+}
+.carousel-control-prev-icon {
+    background-image: url(\\images/partners/leftArrow.svg);
+}
+.carousel-control-next-icon, .carousel-control-prev-icon {
+    width: 3.75rem;
+    height: 3.75rem;
+
+}
+.corporate h1 {
+    padding-bottom: 3rem;
+}
+.logo-content {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+.card-body > .iconName{
+    text-align: center;
+}
+.header-content-without-card {
+    padding-bottom: 5.7rem;
+}
+.img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+.section-padding {
+    padding-bottom: 3rem;
+}
+.corporate {
+    padding-bottom: 3rem;
+    padding-top: 3rem;
+}
+.card-content{
+    padding-top: 1.5rem;
+}
+.padding-top{
+    padding-top: 3rem;
+}
+.partnerBtn {
+    margin-top: auto;
+    background: #2f8f9c;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    padding: .5rem 3rem .5rem 3rem;
+    font-size: 1.65rem;
+    text-decoration: none;
+}
+.partnerBtn:hover{
+    text-decoration:none;
+    color:#2f8f9c;
+    background-color:#D3E5E8;
+}
+
+/*-----------------Media Query-----------------*/
+@media (max-width: 1300px) {
+    .carousel-item {
+        padding: 2.6rem;
+    }
+    .carousel-control-prev {
+        margin-left: -3.75rem;
+    }
+    .carousel-control-next {
+        margin-right: -3.75rem;
+    }
+}
+@media (max-width: 1100px) {
+    .carousel-item {
+        padding: 3.5rem;
+    }
+    .carousel-control-prev {
+        margin-left: -1.8rem;
+    }
+    .carousel-control-next {
+        margin-right: -1.8rem;
+    }
+}
+@media (max-width: 992px) {
+    .carousel-control-prev, .carousel-control-next {
+        margin-left: unset;
+    }
+    .card, .partners .card {
+        height: auto;
+    }
+    .partner-mob {
+        padding: 1rem;
+    }
+    .carousel-item {
+        padding: .2rem;
+    }
+    .partner-mob p {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    .video-call {
+        padding-top: 5%;
+    }
+    .header-content-without-card {
+        padding-bottom: 0rem;
+    }
+    .testimonial {
+        padding-top: 0rem;
+    }
+    .section-padding{
+        padding-bottom: 0rem;
+    }
+    .partner-with-us h1, p {
+        margin: 0rem;
+    }
+    .corporate{
+        padding-bottom: 0rem;
+        padding-top: 0rem;
+    }
+    .card-content {
+        padding-top: 0rem;
+    }
+    .padding-top {
+        padding-top: 0.2rem;
+    }
+    .card {
+        min-height: 15rem;
+    }
+    .testimonial .card .card-subtitle {
+        margin-bottom: 0rem;
+        margin-top: 0rem;
+        margin-left: 1rem;
+    }
+    .testimonial{
+        padding-bottom: 0rem;
+    }
+    .partners .card {
+        min-height: 15rem;
+    }
+    .testimonial .card .card-title{
+        top: 0rem;
+        margin-left: 1rem;
+    }
+    .our-clients {
+        display: flex;
+        align-items: center;
+    }
+    .carousel-control-next {
+        margin-right: 0rem;
+    }
+    .corporate h1{
+        padding-bottom: 0rem;
+    }
+    .our-corporate .card-img-top {
+        position: relative;
+    }
+    .our-corporate .card-body {
+        position: absolute;
+        bottom: 0rem;
+        background: linear-gradient( 160deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+        width: -webkit-fill-available;
+    }
+}
+
+

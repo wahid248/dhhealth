@@ -1,0 +1,339 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+
+@{
+    ViewData["Title"] = "ShowSectionDetails";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+
+    //Model.sectionDetails.PageId = Model.sectionDetails.Page.Id;
+
+    var pageList = new List<SelectListItem>();
+    var sectionList = new List<SelectListItem>();
+    var SectionTypeList = new List<SelectListItem>();
+
+    foreach (var s in Enum.GetValues(typeof(SectionTypes)))
+    {
+
+        SectionTypeList.Add(new SelectListItem()
+        {
+            Value = (Convert.ToInt32(s))  
+            .ToString(),
+            Text = Enum.GetName(typeof(SectionTypes), s),
+            Selected = (int)s == Model.SectionDetails.Section.SectionTypeId ? true : false
+
+        });
+    }
+
+    foreach (var p in Model.Pages)
+    {
+        pageList.Add(new SelectListItem()
+        {
+            Value = p.Id.ToString(),
+            Text = p.Name,
+            Selected = p.Id == Model.SectionDetails.Page.Id ? true : false
+        });
+    }
+    foreach (var s in Model.Sections)
+    {
+
+        sectionList.Add(new SelectListItem()
+        {
+            Value = s.Id.ToString(),
+            Text = s.TitleLarge,
+            Selected = s.Id == Model.SectionDetails.Section.ParentSectionId ? true : false
+        });
+    }
+
+}
+
+@section Styles{
+    <style>
+        .add-section form, .update-section form {
+            width: 100%;
+            display: inline-block;
+        }
+
+        .hidden-field {
+            width: 80%;
+        }
+    </style>
+}
+
+<!-- Modal -->
+@await Html.PartialAsync("~/Views/Image/_ImagePopupModal.cshtml")
+
+
+<div class="row edit-section p-5">
+    <fieldset class="border p-4 col-lg-12">
+        <legend class="w-auto pl-4 pr-4 text-center">Section Details</legend>
+
+        @Html.ValidationMessage("Failed to Create")
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            @Model.SuccessMessage
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        }
+
+        @using (Html.BeginForm("UpdateSection", "Section", FormMethod.Post))
+        {
+        @Html.AntiForgeryToken()
+
+        <div class="row justify-content-center">
+
+            <fieldset class="border p-4 m-2 col-lg-7">
+                <legend class="w-auto pl-4 pr-4 text-left">Page Selection</legend>
+                <div class="row">
+                    <div class="col-lg-4">
+
+                        @foreach (var p in Model.Pages.Select((value, index) => new Web.ViewModels.PageViewModel { Id = value.Id, Name = value.Name, Index = index + 1 }))
+                            {
+                                if (p.Index == Model.SectionDetails.Page.Id)
+                                {
+                        <input type="radio" id="page-@p.Id" name="@Html.NameFor(p => p.Page.Id)" value="@p.Id" checked="checked" />
+                        <span><label for="page-@p.Id">@p.Name</label></span>
+                        <br />
+                                    continue;
+                                }
+                        <input type="radio" id="page-@p.Id" name="@Html.NameFor(p => p.Page.Id)" value="@p.Id" />
+                        <span><label for="page-@p.Id">@p.Name</label></span>
+                        <br />
+                                if (p.Index % 3 == 0)
+                                {
+                        @Html.Raw("</div>")
+                        @Html.Raw("<div class='col-lg-4'>")
+                                }
+                            }
+
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-4 m-2 col-lg-4">
+                <legend class="w-auto pl-4 pr-4 text-left">Parent Section</legend>
+                @if(Model.SectionDetails.Section.ParentSectionId != null)
+                     {
+                @Html.CheckBox("UseParentSection", true, new { id = "enableParentSectionDropdown" })  <label for="enableParentSectionDropdown">Use Parent Section</label>
+                <div class="form-group pt-4 hidden-field">
+                    <select class="form-control" name="PageList" asp-items="pageList" placeholder="PageList" id="PageList">
+                    </select>
+                </div>
+                <div class="form-group hidden-field" style="display: inline-flex;">
+                    <select class="form-control" name="ParentSectionId" asp-items="sectionList" placeholder="SectionList" id="SectionList">
+                    </select>
+                    <div class="section-list lds-spinner" style="top: -19px;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
+                     }
+                     else
+                     {
+                @Html.CheckBox("UseParentSection", false, new { id = "enableParentSectionDropdown" })  <label for="enableParentSectionDropdown">Use Parent Section</label>
+                <div class="form-group pt-4 hidden-field">
+                    <select class="form-control" name="PageList" asp-items="pageList" placeholder="PageList" id="PageList" disabled>
+                    </select>
+                </div>
+                <div class="form-group hidden-field" style="display: inline-flex;">
+                    <select class="form-control" name="ParentSectionId" asp-items="sectionList" placeholder="SectionList" id="SectionList" disabled>
+                    </select>
+                    <div class="section-list lds-spinner" style="top: -19px;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
+
+                     }
+
+            </fieldset>
+            <fieldset class="border p-4 col-lg-8">
+                <legend class="w-auto pl-4 pr-4 text-left">Section Details</legend>
+                <div class="form-group">
+                    <select class="form-control" name="SectionTypeId" asp-items="SectionTypeList" id="SectionTypeList">
+                    </select>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.SectionDetails.Section.SectionOrder, new { @class = "form-control", @type = "number", @min = "1", placeholder = "Section Order" })
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.SectionOrder)
+                </div>
+                <div class="form-group d-inline-flex w-75 pr-3">
+                    @Html.TextBoxFor(m => m.SectionDetails.Section.TitleSmall, new { @class = "form-control", placeholder = "Title Small" })
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.TitleSmall)
+                </div>
+                <span style="font-style:italic; font-size:.8rem; color:dimgray" id="defaultTxt">// Show on Top </span>
+                <div class="form-group d-inline-flex w-75 pr-3">
+                    @Html.TextBoxFor(m => m.SectionDetails.Section.TitleLarge, new { @class = "form-control", placeholder = "Title" })
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.TitleLarge)
+                </div>
+                @Html.CheckBoxFor(m => m.SectionDetails.Section.TitleLargeOnTop, new { @checked = Model.SectionDetails.Section.TitleLargeOnTop})&nbsp; <label for="TitleLargeOnTop">Show On Top</label>
+
+                <div class="form-group" id="imagethum">
+
+                    @if (@Model.SectionDetails.Section.Image != null)
+                        {
+                    <button class="btn btn-info" id="imageBtn" disabled>Add Image</button>
+                    <img src="@Url.Content(Model.SectionDetails.Section.Image.ImageUrl)" class="img-fluid img-thumbnail" alt="" style="width:15rem; height:10rem">
+                    <span class="delete"><img src="/images/deleteIcon.png" class="img-fluid" id="deleteBtn" alt=""></span>
+                        }
+                        else
+                        {
+                    <button class="btn btn-info" id="imageBtn">Add Image</button>
+                        }
+
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.SectionDetails.Section.ImageId)
+                </div>
+                <div class="form-group">
+
+                    @Html.TextAreaFor(m => m.SectionDetails.Section.Content, new { @class = "form-control", placeholder = "Content", @rows = 5 })
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.Content)
+                </div>
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.SectionDetails.Section.CustomCss, new { @class = "form-control", placeholder = "Custom Css",@rows = 4 })
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.CustomCss)
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.SectionDetails.Section.Id, new { @class = "form-control",@type = "hidden", placeholder = "SectionId"})
+                    @Html.ValidationMessageFor(m => m.SectionDetails.Section.Id)
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Page.Id, new { @class = "form-control",@type = "hidden", placeholder = "PageId"})
+                    @Html.ValidationMessageFor(m => m.Page.Id)
+                </div>
+                <button type="submit" class="btn btn-info ml-5" style="float: right;" id="btn-update" disabled>Update</button>
+            </fieldset>
+        </div>
+
+        }
+
+    </fieldset>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/section.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            //Remove image from Form on click
+            $(document).on('click', '#deleteBtn', function () {
+                $(".img-thumbnail").remove();
+                $(".delete").remove();
+                $('#SectionDetails_Section_ImageId').attr('value', '');
+                $('#imageBtn').attr('disabled', false);
+            });
+            //image selection popup
+            $('#imageBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#imagePopup').appendTo("body").modal('show');
+            });
+            //image on click
+            $(document).on('click', '.img-wrap img', function () {
+                id = $(this).attr('id');
+                src = $(this).attr('src');
+                $('#SectionDetails_Section_ImageId').attr('value',id)
+                $('#imagePopup').modal('hide');
+                var newHtml = "";
+                newHtml += '<img src="' + src + '" class="img-fluid img-thumbnail" alt="" style="width:15rem; height:10rem">';
+                newHtml += '<span class="delete"><img src="/images/deleteIcon.png" class="img-fluid" id="deleteBtn" alt=""></span>';
+                $("#imagethum").append(newHtml);
+                $('#imageBtn').attr('disabled', true);
+            });
+            //get selected album images
+            $('.album-wrap button').on("click", function (e) {
+                e.preventDefault();
+                $(".album-wrap button").removeClass('active');
+                $(this).toggleClass('active');
+
+                $('#addImageBtn').attr('disabled', false);
+                album = $(this).attr('id');
+                //put albam name to add image form
+                $('#albumName').val(album);
+                //get all images for selected album
+                $.ajax({
+                    url: '@Url.Action("GetSelectedImageList", "Image")',
+                    type: "GET",
+                    data: { Album: album },
+                    beforeSend: () => {
+                        //$('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                    success: response => {
+                        //console.log(response);
+                        var newHtml = "";
+                        $.each(response, function (index, value) {
+                            if (value.imageUrl) {
+                                newHtml += '<div class="col-lg-3 img-wrap">';
+                                newHtml += '<img src="' + value.imageUrl + '" id="' + value.id + '" class="img-fluid img-thumbnail" alt="">';
+                                newHtml += '</div>';
+                            }
+                            else {
+                                newHtml += '<div class="col-lg-12 img-wrap">';
+                                newHtml += '<h1 class="text-center">No Images To Select!<h1>';
+                                newHtml += '</div>';
+                            }
+
+                        });
+                       $("#imageView").html(newHtml);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        //$('.section-list.lds-spinner').css('display', 'none');
+                    }
+                });
+            });
+            //End get selected album images
+
+            $("#sectionDetails_Section_TitleLargeOnTop").change(function () {
+
+                if ($(this).prop('checked')==true)
+                {   $('#defaultTxt').css('display', 'none');
+                    $('#sectionDetails_Section_TitleLargeOnTop').attr('value',true)
+                    }
+                else {
+                    $('#defaultTxt').css('display', 'inline-block');
+                    $('#sectionDetails_Section_TitleLargeOnTop').attr('value', false)
+                    }
+            });
+
+            $("#enableParentSectionDropdown").change(function () {
+                $('#PageList, #SectionList').prop('disabled', !$(this).prop('checked'));
+                $('#SectionTypeList').prop('disabled', $(this).prop('checked'));
+            });
+            if ($("#enableParentSectionDropdown").prop('checked')) {
+                $('#SectionTypeList').prop('disabled', true);
+            }
+
+
+            $('#PageList').on('change', () => {
+                $.ajax({
+                    url: '@Url.Action("GetAllSections", "Section")',
+                    type: "GET",
+                    data: { pageId: $('#PageList').val() },
+                    beforeSend: () => {
+                        $('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                    success: response => {
+                        $('#SectionList').empty();
+                        $.each(response, (index, value) => {
+                            $('#SectionList').append($("<option></option>").attr("value", value.id).text(value.titleLarge));
+                        });
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        $('.section-list.lds-spinner').css('display', 'none');
+                    }
+                });
+
+            });
+            $('input,textarea,#deleteBtn').on('click', () => {
+            $('#btn-update').prop('disabled', '');
+        });
+
+        });
+    </script>
+}

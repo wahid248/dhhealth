@@ -1,0 +1,255 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@using Core.Enums.SectionType
+@{
+    ViewData["Title"] = "Career";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Meta{
+    <meta property="og:url" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Career | Digital Healthcare Solutions" />
+    <meta property="og:description" content="We are Hiring" />
+    <meta property="og:image" content="https://dh.health/images/career-cover.png" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Career | Digital Healthcare Solutions" />
+    <meta name="twitter:description" content="We are Hiring">
+    <meta name="twitter:image" content="https://dh.health/images/career-cover.png">
+    <meta name="twitter:domain" content="">
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/Career.css" />
+}
+
+<div class="container career">
+    @if (Model.PagesWithSections != null)
+    {
+        foreach (var pageWithSections in Model.PagesWithSections)
+        {
+            int count = 0;
+            foreach (var parentSections in pageWithSections.ParentSections)
+            {
+                if (count == 2)
+                {
+                    <div class="row jobs padding-bottom">
+                        <div class="col-lg-12 text-center section-padding d-flex justify-content-center">
+                            <h1>Career at DH</h1>
+                            <!-- share button popover  -->
+                            <div class="popover-block-container pl-3">
+                                <a href="#" tabindex="0" data-popover-content="#unique-id" data-toggle="popover" data-placement="right" id="shareBtn"><img class="img-fluid margin-top-share-image shareBtn" src="/images/news/share.svg" alt=""></a>
+                                <div id="unique-id" style="display:none;">
+                                    <div class="popover-body" id="test">
+                                        <h5 class="pt-3 pb-2 text-center">SHARE THIS JOB</h5>
+                                        <a class="linkedinShare"><img src="/images/linkedin.svg" alt="image" class="img-fluid social-icon"></a>
+                                        <a class="fbShare"><img src="/images/fb.svg" alt="image" class="img-fluid social-icon"></a>
+                                        <a class="twitterShare"><img src="/images/twitter.svg" alt="image" class="img-fluid social-icon"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /End share button popover  -->
+                        </div>
+                        <div class="col-lg-12">
+                            <h6 class="pl-3">Available Jobs</h6>
+                            <table class="table table-hover table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Job Title</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Deadline</th>
+                                        <th scope="col" class="d-none d-lg-table-cell"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.JobPosts != null)
+                                    {
+                                        foreach (var jopPosts in Model.JobPosts)
+                                        {
+                                            <tr onclick="location.href = '@(Url.Action("JobPost", "Career", new { Id = jopPosts.JobCode }))'">
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => jopPosts.JobCode)
+                                                    @Html.DisplayFor(modelItem => jopPosts.Postion)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => jopPosts.JobLocation)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => jopPosts.DeadLine)
+                                                </td>
+                                                <td class="d-none d-lg-table-cell">
+                                                    @Html.ActionLink("View", "JobPost", "Career", new { Id = jopPosts.JobCode }, htmlAttributes: null)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                if (parentSections.SectionTypeId == (int)SectionTypes.BannerContent)
+                {
+                    <div class="row centered header-content-without-card">
+                        <div class="col-lg-12 text-center">
+                            <div class="header-txt header-text-background">
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <div class="padding-for-mobile">
+                                    @Html.Raw((@parentSections.Content))
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-lg-12 padding-title text-center">
+                            @if (parentSections.TitleLargeOnTop)
+                            {
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                                <h4 style="color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                            }
+                            else
+                            {
+                                <h4 style="color:#2F8F9C;">@Html.DisplayFor(modelItem => parentSections.TitleSmall)</h4>
+                                <h1>@Html.DisplayFor(modelItem => parentSections.TitleLarge)</h1>
+                            }
+                            <div class="content">
+                                @Html.Raw((@parentSections.Content))
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithOutBackground)
+                {
+                    <div class="row middled padding-bottom dh-image">
+                        @foreach (var sections in pageWithSections.Sections)
+                        {
+                            if (sections.ParentSectionId == parentSections.Id)
+                            {
+                                <div class="col-lg-4 middled d-block section-padding">
+                                    <div class="icon-title">
+                                        <img class="img-fluid" src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                        <div class="life-dh">
+                                            <p class="m-0">@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                            <div class="description">
+                                                @Html.Raw((@sections.Content))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+
+                if (parentSections.SectionTypeId == (int)SectionTypes.CardWithBackground)
+                {
+                    <div class="row padding-bottom">
+                        @foreach (var sections in pageWithSections.Sections)
+                        {
+                            if (sections.ParentSectionId == parentSections.Id)
+                            {
+                                <div class="col-lg-4 card-padding">
+                                    <div class="card box-shadow">
+                                        <img src="@Html.DisplayFor(modelItem =>sections.Image.ImageUrl)" alt="">
+                                        <p class="m-0">@Html.DisplayFor(modelItem => sections.Image.BottomText)</p>
+                                        <div class="card-body">
+                                            @if (sections.TitleLargeOnTop)
+                                            {
+                                                <h4 class="card-title text-center">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                                <h6 class="card-subtitle text-center titlesmall">@Html.DisplayFor(modelItem => sections.TitleSmall)</h6>
+                                            }
+                                            else
+                                            {
+                                                <h6 class="card-subtitle text-center titlesmall">@Html.DisplayFor(modelItem => sections.TitleSmall)</h6>
+                                                <h4 class="card-title text-center">@Html.DisplayFor(modelItem => sections.TitleLarge)</h4>
+                                            }
+                                            <div>
+                                                @Html.Raw((@sections.Content))
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                count++;
+            }
+        }
+    }
+
+    @*    <div class="row centered padding-bottom">
+            <div class="col-lg-8 text-center ceo-mobile-padding">
+                <div class="col-lg-12 float-img-div">
+                    <a href="#" class="player">
+                        <div class="play-btn">
+                            <img class="img-fluid w-75" src="/images/whoWeAre/playBtn.svg" alt="">
+                        </div>
+                    </a>
+                    <div class="lazy-load-gif">
+                        <img class="img-fluid w-100" data-echo="/images/career/ceo/CEO Image-Full.png" alt="">
+                        <div class="loader"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="col-lg-12 video-sm-top p-1">
+                    <a href="#" class="player">
+                        <div class="play-btn">
+                            <img class="img-fluid" src="/images/whoWeAre/playBtn.svg" alt="">
+                        </div>
+                    </a>
+                    <div class="lazy-load-gif">
+                        <img class="img-fluid" data-echo="/images/career/ceo/CEO Image-Full.png" alt="">
+                        <div class="loader"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+                <div class="col-lg-12 video-sm-bottom p-1">
+                    <a href="#" class="player">
+                        <div class="play-btn">
+                            <img class="img-fluid" src="/images/whoWeAre/playBtn.svg" alt="">
+                        </div>
+                    </a>
+                    <div class="lazy-load-gif">
+                        <img class="img-fluid" data-echo="/images/career/ceo/CEO Image-Full.png" alt="">
+                        <div class="loader"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>*@
+</div>
+
+@*popup video player*@
+@await Html.PartialAsync("~/Views/WhoWeAre/_PlayVideoPopup.cshtml")
+
+<script>
+    $(document).ready(function () {
+        //share button popover
+        var url = encodeURIComponent(window.location.href);
+        $("meta[property='og\\:url']").prop('content', url);
+        $("meta[name='twitter:domain']").prop('content', url);
+
+        $('#shareBtn').on("click", function (e) {
+            e.preventDefault();
+            var tweet = encodeURIComponent($("meta[name='twitter:description']").attr("content"));
+            $('a.fbShare, a.twitterShare, a.linkedinShare').attr('target', '_blank');
+            $("a.fbShare").prop('href', 'https://www.facebook.com/sharer.php?u=' + url);
+            $("a.twitterShare").prop('href', 'https://twitter.com/intent/tweet?url=' + url);
+            $('a.linkedinShare').prop('href', 'https://www.linkedin.com/sharing/share-offsite/?url=' + url);
+        });
+        $("[data-toggle=popover]").popover({
+            html: true,
+            trigger: 'focus',
+            content: function () {
+                return $('.popover-body').html();
+            }
+        });
+    });
+
+</script>

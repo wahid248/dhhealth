@@ -1,0 +1,92 @@
+﻿@model Web.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login | Digital Healthcare Solutions</title>
+
+    <bundle name="wwwroot/bundles/site.min.css" />
+    <bundle name="wwwroot/bundles/site-admin.min.js" />
+
+    <style>
+        body{
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            padding: 50px 25px;
+        }
+        form {
+            background: #ffffff none repeat scroll 0 0;
+            border: 1px solid #d4d4d4;
+            border-radius: 3px;
+            width: 24rem;
+            padding: 2rem;
+            box-shadow: 5px 5px 20px #ccc;
+        }
+
+        .heading {
+            text-align: center;
+        }
+
+        .heading h2 {
+            color: #444444;
+            font-size: 1.3rem;
+            margin: 0 0 3rem 0;
+        }
+
+        .heading p {
+            color: #777777;
+            font-size: 1rem;
+            line-height: 1.7rem;
+        }
+
+        .form-control {
+            border: 1px solid #d4d4d4;
+            height: 2.86rem;
+            line-height: 3.57rem;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        .forgot {
+            text-align: left;
+            margin-bottom: 2.14rem;
+            line-height: 1.43rem;
+        }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("LogIn", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="heading">
+            <h2>Login</h2>
+            @Html.ValidationMessage("LoginError")
+        </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "User Name" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password", placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.RememberMe)
+            @Html.LabelFor(m => m.RememberMe)
+        </div>
+        <div class="forgot">
+            <a href="#">Forgot Password</a>
+        </div>
+        <button type="submit" class="btn btn-info" style="width: 100%;">Login</button>
+    }
+</body>
+</html>

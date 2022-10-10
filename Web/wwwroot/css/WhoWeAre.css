@@ -1,0 +1,165 @@
+﻿.our-mission {
+    position: relative;
+    z-index: 5;
+    margin-top: -15rem;
+}
+.our-mission h1 {
+    color: #ffffff;
+}
+.our-mission h4 {
+    font-weight: normal;
+    color: #ffffff;
+}
+.ceo {
+    padding-top: 10rem;
+}
+.ceo .card .card-body {
+    padding: 7rem 3rem 1rem 3rem;
+}
+.ceo .card {
+    position: relative;
+    width: 45rem;
+    height: 30rem;
+    border: none;
+    border-radius: 16px;
+    left: 25rem;
+    background: #F6F8F9 !important;
+}
+.ceo .play-btn {
+    font-size: 2rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-40%, -50%);
+}
+.ceo-img-div {
+    width: 35rem;
+    position: absolute;
+    z-index: 33;
+    bottom: 16rem;
+}
+.ceo .card .card-subtitle {
+    position: relative;
+    padding-left: 8rem;
+    color: #2F8F9C;
+}
+.ceo .card .card-title {
+    position: relative;
+    padding-left: 8rem;
+    padding-bottom: 2rem;
+}
+.health-care {
+    padding-bottom: 8rem;
+}
+.health-care .card {
+    border: none;
+    background: none;
+}
+.health-care .card img {
+    width: 10rem;
+}
+.health-care .card h4 {
+    font-size: 2rem;
+    font-weight: normal;
+}
+.team {
+    padding-bottom: 13rem;
+}
+.team .card {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    height: 21.5rem;
+    border: none;
+    border-radius: 16px;
+}
+.team .card img {
+    width: 9rem;
+    align-self: center;
+}
+.team .team-heading h4 {
+    color: #2F8F9C;
+    font-weight: normal;
+}
+.header-txt h1 {
+    margin-bottom: 3rem;
+}
+.padding-content {
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 3rem;
+}
+
+/*-----------------Media Query-----------------*/
+
+@media (max-width: 1200px) {
+    .ceo .card {
+        width: 37rem;
+    }
+}
+@media (max-width: 1100px) {
+    .ceo .card {
+        width: 33rem;
+    }
+}
+@media (max-width: 992px) {
+    .our-mission {
+        margin-top: unset;
+        padding-top: 0rem;
+    }
+    .our-mission h1, .our-mission h4 {
+        color: #000000;
+    }
+    .ceo .card {
+        width: auto;
+        height: auto;
+        left: unset;
+        box-shadow: 0px 0px 30px rgba(33, 33, 33, 0.2);
+    }
+    .ceo .card .card-subtitle, .ceo .card .card-title {
+        left: unset;
+        text-align:center;
+    }
+    .ceo {
+        padding-top: unset;
+        padding-bottom: 1rem;
+    }
+    .ceo .card .card-body {
+        padding-top: 1rem;
+    }
+    .ceo .card .card-subtitle {
+        padding-left: 0rem;      
+    }
+    .ceo .card .card-title {
+        padding-left: 0rem;
+    }
+    .header-txt h1 {
+        font-size: 2rem;
+        margin: 0rem;
+    }
+    .header-txt h4{
+        text-align: center;
+        margin: 0rem;
+    }
+    .ceo-mobile {
+        position: relative;
+    }
+    .padding-content {
+        padding: 0rem;
+    }
+    .padding-content p {
+        margin: 0rem;
+    }
+    .padding-content ul {
+        margin-bottom: 0rem;
+    }
+    .health-care .card img {
+        width: 8rem;
+    }
+    .health-care {
+        padding-bottom: 0rem;
+    }
+    .ceo .card .card-title{
+        padding-bottom: 0rem;
+    }
+}

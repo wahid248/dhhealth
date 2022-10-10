@@ -1,0 +1,147 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@{
+    ViewData["Title"] = "ShowBannerDetails";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .add-section form, .update-section form {
+            width: 100%;
+            display: inline-block;
+        }
+
+        .hidden-field {
+            width: 80%;
+        }
+    </style>
+}
+
+<!-- Modal -->
+@await Html.PartialAsync("~/Views/Image/_ImagePopupModal.cshtml")
+
+
+<div class="row edit-section p-5">
+    <div class="col-lg-12">
+        @Html.ValidationMessage("Failed to Create")
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                @Model.SuccessMessage
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+        @using (Html.BeginForm("UpdateBanner", "Page", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row justify-content-center">
+                <fieldset class="border p-4 col-lg-10">
+                    <legend class="w-auto pl-4 pr-4 text-left">@Html.DisplayFor(m => m.BannerDetails.PageName) Page Banner</legend>
+
+                    <div class="form-group" id="imagethum">
+                        <button class="btn btn-info" id="imageBtn" disabled>Add Image</button>
+                        <img src="@Url.Content(Model.BannerDetails.ImageUrl)" class="img-fluid py-4" alt="">
+                        <span class="delete"><img src="/images/deleteIcon.png" class="img-fluid" id="deleteBtn" alt=""></span>
+                    </div>
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.BannerDetails.ImageId)
+                    </div>
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.BannerDetails.PageId)
+                    </div>
+                    <button type="submit" class="btn btn-info ml-5" style="float: right;" id="btn-update" disabled>Update</button>
+                </fieldset>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            //Remove image from Form on click
+            $(document).on('click', '#deleteBtn', function () {
+                $(".img-fluid").remove();
+                $(".delete").remove();
+                $('#BannerDetails_ImageId').attr('value', '');
+                $('#imageBtn').attr('disabled', false);
+            });
+            //image selection popup
+            $('#imageBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#imagePopup').appendTo("body").modal('show');
+            });
+            //image on click
+            $(document).on('click', '.img-wrap img', function () {
+                id = $(this).attr('id');
+                src = $(this).attr('src');
+                $('#BannerDetails_ImageId').attr('value',id)
+                $('#imagePopup').modal('hide');
+                var newHtml = "";
+                newHtml += '<img src="' + src + '" class="img-fluid py-4" alt="">';
+                newHtml += '<span class="delete"><img src="/images/deleteIcon.png" class="img-fluid" id="deleteBtn" alt=""></span>';
+                $("#imagethum").append(newHtml);
+                $('#imageBtn').attr('disabled', true);
+            });
+            //get selected album images
+            $('.album-wrap button').on("click", function (e) {
+                e.preventDefault();
+                $(".album-wrap button").removeClass('active');
+                $(this).toggleClass('active');
+
+                $('#addImageBtn').attr('disabled', false);
+                album = $(this).attr('id');
+                //put albam name to add image form
+                $('#albumName').val(album);
+                //get all images for selected album
+                $.ajax({
+                    url: '@Url.Action("GetSelectedImageList", "Image")',
+                    type: "GET",
+                    data: { Album: album },
+                    beforeSend: () => {
+                        //$('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                    success: response => {
+                        //console.log(response);
+                        var newHtml = "";
+                        $.each(response, function (index, value) {
+                            if (value.imageUrl) {
+                                newHtml += '<div class="col-lg-3 img-wrap">';
+                                newHtml += '<img src="' + value.imageUrl + '" id="' + value.id + '" class="img-fluid img-thumbnail" alt="">';
+                                newHtml += '</div>';
+                            }
+                            else {
+                                newHtml += '<div class="col-lg-12 img-wrap">';
+                                newHtml += '<h1 class="text-center">No Images To Select!<h1>';
+                                newHtml += '</div>';
+                            }
+
+                        });
+                       $("#imageView").html(newHtml);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        //$('.section-list.lds-spinner').css('display', 'none');
+                    }
+                });
+            });
+            //End get selected album images
+
+            $('input,textarea,#deleteBtn').on('click', () => {
+            $('#btn-update').prop('disabled', '');
+        });
+
+        });
+    </script>
+}
+

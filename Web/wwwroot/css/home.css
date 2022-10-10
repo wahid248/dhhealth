@@ -1,0 +1,74 @@
+﻿.our-reach .card {
+    border: none;
+    background: none;
+}
+.our-reach .card img{
+    width:6rem;
+    height:5rem;
+}
+.our-reach .card  h1 {
+    font-size: 2.5rem;
+}
+.campain ul li {
+    padding-bottom: 0.25rem;
+}
+.campain .card {
+    height: 43rem;
+    border-radius: .625rem;
+}
+.campain .card .card-img-top {
+    border-radius: .625rem .625rem 0 0;
+}
+.home-gallery img {
+    width: 100%;
+    border-radius: .625rem;
+}
+.home-gallery h4 {
+    font-size: 2.25rem;
+    color: #2F8F9C;
+}
+.img-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/*-----------------Media Query-----------------*/
+@media (max-width: 992px) {
+    .home-gallery img {
+        width: 100%;
+        padding-bottom: 2rem;
+    }
+    .our-reach {
+        padding-left:1.5rem;
+        padding-right:1.5rem;
+    }
+    .our-reach .card img {
+        width:auto;
+        height: 3.5rem;
+    }
+    .campain .card {
+        margin-bottom:0rem;
+    }
+    .mobile-img-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+    .icon-title {
+        display: flex;
+    }
+    .our-reach .card h1 {
+        font-size: 1.5rem;
+    }
+    .campain .card .card-img-top {
+        position: relative;
+    }
+    .campain .card .card-body {
+        position: absolute;
+        bottom: 0rem;
+        background: linear-gradient( 25deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 90%);
+        width: -webkit-fill-available;
+    }
+}

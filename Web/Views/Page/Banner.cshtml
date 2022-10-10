@@ -1,0 +1,223 @@
+﻿@model Web.ViewModels.SectionListViewModel
+@{
+    ViewData["Title"] = "Banner";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .add-section form, .update-section form {
+            width: 100%;
+            display: inline-block;
+        }
+        .hidden-field {
+            width: 80%;
+        }
+        #imagethum {
+            position: relative;
+        }
+        .delete {
+            position: absolute;
+            top: .5rem;
+            right: 10rem;
+            z-index: 100;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+}
+
+<!-- Modal -->
+@await Html.PartialAsync("~/Views/Image/_ImagePopupModal.cshtml")
+
+<div class="row add-section justify-content-center">
+    @*<div class="col-lg-5">
+        @using (Html.BeginForm("AddBanner", "Page", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="heading">
+                <h1>Page Banner</h1>
+
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        @Model.SuccessMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        @Model.ErrorMessage
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+            </div>
+            <fieldset class="border p-4">
+                <legend class="w-auto pl-4 pr-4 text-left">Page Selection</legend>
+                <div class="row">
+                    <div class="col-lg-4">
+                        @for (var i = 1; i <= Model.RadioButtons.Count(); i++)
+                        {
+                            var r = Model.RadioButtons[i - 1];
+
+                            if (r.IsChecked)
+                            {
+                                <input type="radio" id="@r.Id" name="@Html.NameFor(p => p.Page.Id)" value="@r.Id" checked="checked" />
+                                <span><label for="@r.Id">@r.Name</label></span>
+                                <br />
+                            }
+                            else
+                            {
+                                <input type="radio" id="@r.Id" name="@Html.NameFor(p => p.Page.Id)" value="@r.Id" />
+                                <span><label for="@r.Id">@r.Name</label></span>
+                                <br />
+                            }
+                            if (i % 3 == 0)
+                            {
+                                @Html.Raw("</div>")
+                                @Html.Raw("<div class='col-lg-4'>")
+                            }
+                        }
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="border p-4">
+                <legend class="w-auto pl-4 pr-4 text-left">Image Selection</legend>
+                <div class="form-group" id="imagethum">
+                    <button class="btn btn-info" id="imageBtn">Add Image</button>
+
+                </div>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.Image.Id)
+                </div>
+                <button type="submit" class="btn btn-info" style="float: right;">Save</button>
+            </fieldset>
+            <br />
+            <br />
+        }
+    </div>*@
+    @*<div class="offset-lg-1 col-lg-6">*@
+    <div class="col-lg-10">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Page</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.Banners != null)
+                {
+                    foreach (var banner in Model.Banners)
+                    {
+                        <tr class="banners-table" id="@banner.PageId">
+                            <td id="@banner.PageId">
+                                @Html.DisplayFor(modelItem => banner.PageName)
+                            </td>
+                            <td>
+                                <img src="@Url.Content(banner.ImageUrl)" class="img-fluid img-thumbnail" alt="">
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "ShowBannerDetails", "Page", new { Id = banner.PageId }, new { @class = "btn btn-info" })
+                            </td>
+                        </tr>
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            //Remove image from Form on click
+            $(document).on('click', '#deleteBtn', function () {
+                $(".img-thumbnail").remove();
+                $(".delete").remove();
+                $('#Image_Id').attr('value', '');
+
+                $('#imageBtn').attr('disabled', false);
+            });
+            //image selection popup
+            $('#imageBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#imagePopup').appendTo("body").modal('show');
+            });
+             //image on click
+            $(document).on('click', '.img-wrap img', function () {
+                id = $(this).attr('id');
+                src = $(this).attr('src');
+                $('#Image_Id').attr('value',id)
+                $('#imagePopup').modal('hide');
+                var newHtml = "";
+                newHtml += '<img src="' + src + '" class="img-fluid img-thumbnail" alt="" style="width:15rem; height:10rem">';
+                newHtml += '<span class="delete"><img src="/images/deleteIcon.png" class="img-fluid" id="deleteBtn" alt=""></span>';
+                $("#imagethum").append(newHtml);
+                $('#imageBtn').attr('disabled', true);
+            });
+            //get selected album images
+            $('.album-wrap button').on("click", function (e) {
+                e.preventDefault();
+                $(".album-wrap button").removeClass('active');
+                $(this).toggleClass('active');
+
+                $('#addImageBtn').attr('disabled', false);
+                album = $(this).attr('id');
+                //console.log(album);
+                //put albam name to add image form
+                $('#albumName').val(album);
+                //get all images for selected album
+                $.ajax({
+                    url: '@Url.Action("GetSelectedImageList", "Image")',
+                    type: "GET",
+                    data: { Album: album },
+                    beforeSend: () => {
+                        //$('.section-list.lds-spinner').css('display', 'inline-block');
+                    },
+                    success: response => {
+                        //console.log(response);
+                        var newHtml = "";
+                        $.each(response, function (index, value) {
+                            if (value.imageUrl) {
+                                newHtml += '<div class="col-lg-3 img-wrap">';
+                                newHtml += '<img src="' + value.imageUrl + '" id="' + value.id + '" class="img-fluid img-thumbnail" alt="">';
+                                newHtml += '</div>';
+                            }
+                            else {
+                                newHtml += '<div class="col-lg-12 img-wrap">';
+                                newHtml += '<h1 class="text-center">No Images To Select!<h1>';
+                                newHtml += '</div>';
+                            }
+
+                        });
+                       $("#imageView").html(newHtml);
+                    },
+                    error: xhr => {
+                        alert("Something went wrong, please contact Admin");
+                        console.error(xhr);
+                    },
+                    complete: () => {
+                        //$('.section-list.lds-spinner').css('display', 'none');
+                    }
+                });
+            });
+            //End get selected album images
+
+        });
+    </script>
+}
+
+
+
